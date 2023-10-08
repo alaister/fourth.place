@@ -1,7 +1,9 @@
-import { Button, StyleSheet } from 'react-native'
+import { Suspense } from 'react'
+import { ActivityIndicator, Button, StyleSheet } from 'react-native'
 
 import EditScreenInfo from '~/components/EditScreenInfo'
 import { Text, View } from '~/components/Themed'
+import TabOne from '~/components/screens/TabOne'
 import supabase from '~/lib/supabase'
 
 export default function TabOneScreen() {
@@ -13,6 +15,9 @@ export default function TabOneScreen() {
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
+      <Suspense fallback={<ActivityIndicator />}>
+        <TabOne />
+      </Suspense>
       <Button
         title="Sign Out"
         onPress={() => {

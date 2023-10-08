@@ -15,8 +15,10 @@ import { useCallback, useEffect, useState } from 'react'
 import { StyleSheet, useColorScheme } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { Provider as ReduxProvider } from 'react-redux'
+import { RelayEnvironmentProvider } from 'react-relay'
 
 import { useAuthListener } from '~/lib/auth'
+import environment from '~/lib/relay'
 import { loadInitialAuthState, store } from '~/store'
 export { ErrorBoundary } from 'expo-router'
 
@@ -62,13 +64,15 @@ const RootLayout = () => {
 
   return (
     <GestureHandlerRootView style={styles.root} onLayout={onLayoutRootView}>
-      <ReduxProvider store={store}>
-        <ThemeProvider
-          value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
-        >
-          <Slot />
-        </ThemeProvider>
-      </ReduxProvider>
+      <RelayEnvironmentProvider environment={environment}>
+        <ReduxProvider store={store}>
+          <ThemeProvider
+            value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+          >
+            <Slot />
+          </ThemeProvider>
+        </ReduxProvider>
+      </RelayEnvironmentProvider>
     </GestureHandlerRootView>
   )
 }
