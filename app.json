@@ -36,6 +36,15 @@
     "experiments": {
       "typedRoutes": true,
       "tsconfigPaths": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "61261714-b255-4ad8-89bc-625fa171b34e"
+      }
+    },
+    "owner": "alaister"
   }
 }
