@@ -1,3 +1,4 @@
+import { ApolloProvider } from '@apollo/client'
 import {
   Inter_400Regular,
   Inter_500Medium,
@@ -15,10 +16,9 @@ import { useCallback, useEffect, useState } from 'react'
 import { StyleSheet, useColorScheme } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { Provider as ReduxProvider } from 'react-redux'
-import { RelayEnvironmentProvider } from 'react-relay'
 
+import { getApolloClient, setupApolloClient } from '~/lib/apollo'
 import { useAuthListener } from '~/lib/auth'
-import environment from '~/lib/relay'
 import { loadInitialAuthState, store } from '~/store'
 export { ErrorBoundary } from 'expo-router'
 
@@ -41,6 +41,7 @@ const RootLayout = () => {
             Inter_700Bold,
           }),
           loadInitialAuthState(),
+          setupApolloClient(),
         ])
       } catch (err) {
         throw err
@@ -64,7 +65,7 @@ const RootLayout = () => {
 
   return (
     <GestureHandlerRootView style={styles.root} onLayout={onLayoutRootView}>
-      <RelayEnvironmentProvider environment={environment}>
+      <ApolloProvider client={getApolloClient()}>
         <ReduxProvider store={store}>
           <ThemeProvider
             value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
@@ -72,7 +73,7 @@ const RootLayout = () => {
             <Slot />
           </ThemeProvider>
         </ReduxProvider>
-      </RelayEnvironmentProvider>
+      </ApolloProvider>
     </GestureHandlerRootView>
   )
 }

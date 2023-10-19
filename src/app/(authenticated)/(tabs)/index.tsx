@@ -1,12 +1,37 @@
-import { Suspense } from 'react'
-import { ActivityIndicator, Button, StyleSheet } from 'react-native'
+import { useApolloClient, useQuery } from '@apollo/client'
+import { Button, StyleSheet } from 'react-native'
 
 import EditScreenInfo from '~/components/EditScreenInfo'
 import { Text, View } from '~/components/Themed'
-import TabOne from '~/components/screens/TabOne'
+import ThingItem from '~/components/ThingItem'
+import { graphql } from '~/gql'
 import supabase from '~/lib/supabase'
 
+const allThingsQueryDocument = graphql(/* GraphQL */ `
+  query AllThings($cursor: Cursor) {
+    thingsCollection(first: 1, after: $cursor) {
+      edges {
+        node {
+          nodeId
+          ...ThingItem @nonreactive
+        }
+      }
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+    }
+  }
+`)
+
 export default function TabOneScreen() {
+  const { data, loading, error, fetchMore } = useQuery(allThingsQueryDocument)
+  const client = useApolloClient()
+
+  if (loading) return null
+  if (error) return null
+  if (!data) return null
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tab One</Text>
@@ -15,13 +40,28 @@ export default function TabOneScreen() {
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-      <Suspense fallback={<ActivityIndicator />}>
-        <TabOne />
-      </Suspense>
+
+      {data.thingsCollection?.edges.map(({ node }) => (
+        <ThingItem key={node.nodeId} thingId={node.nodeId} />
+      ))}
+      {data.thingsCollection?.pageInfo.hasNextPage && (
+        <Button
+          title="Load More"
+          onPress={() => {
+            fetchMore({
+              variables: {
+                cursor: data.thingsCollection?.pageInfo.endCursor,
+              },
+            })
+          }}
+        />
+      )}
+
       <Button
         title="Sign Out"
         onPress={() => {
           supabase.auth.signOut()
+          client.resetStore()
         }}
       />
       <EditScreenInfo path="app/(tabs)/index.tsx" />
