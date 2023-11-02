@@ -39,7 +39,6 @@ export async function setupApolloClient() {
     typePolicies: {
       Query: {
         fields: {
-          thingsCollection: relayStylePagination(),
           node: {
             read(_, { args, toReference }) {
               const ref = toReference({
@@ -49,6 +48,18 @@ export async function setupApolloClient() {
               return ref
             },
           },
+        },
+      },
+      Profile: {
+        fields: {
+          receivedFriendRequestCollection: relayStylePagination([
+            'filter',
+            'orderBy',
+          ]),
+          sentFriendRequestCollection: relayStylePagination([
+            'filter',
+            'orderBy',
+          ]),
         },
       },
     },
@@ -62,7 +73,7 @@ export async function setupApolloClient() {
   }
 
   const httpLink = createHttpLink({
-    uri: 'http://localhost:54321/graphql/v1',
+    uri: `${process.env.EXPO_PUBLIC_SUPABASE_URL}/graphql/v1`,
   })
 
   const authLink = setContext(async (_, { headers }) => {

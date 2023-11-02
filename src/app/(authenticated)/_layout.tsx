@@ -12,7 +12,10 @@ const AuthenticatedLayout = () => {
   return (
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+      <Stack.Screen
+        name="add-friend/[id]"
+        options={{ title: 'Add Friend', presentation: 'modal' }}
+      />
     </Stack>
   )
 }

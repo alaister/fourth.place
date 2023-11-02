@@ -29,8 +29,13 @@ grant
 update ("name") on table public.profiles to anon,
 authenticated;
 
-create
-or replace function private.handle_new_user () returns trigger as $$
+comment on table public.profiles is e'@graphql({"name": "Profile"})';
+
+create function public.preview_profile (id uuid) returns public.profiles as $$
+  select * from public.profiles where id = $1;
+$$ language sql stable security definer;
+
+create function private.handle_new_user () returns trigger as $$
 begin
   insert into public.profiles ("id")
   values (new.id);

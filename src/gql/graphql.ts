@@ -118,6 +118,142 @@ export type FloatFilter = {
   neq?: InputMaybe<Scalars['Float']['input']>
 }
 
+export type Friend = Node & {
+  __typename?: 'Friend'
+  createdAt: Scalars['Datetime']['output']
+  id: Scalars['UUID']['output']
+  /** Globally Unique Record Identifier */
+  nodeId: Scalars['ID']['output']
+  profile: Profile
+  profileA: Profile
+  profileAId: Scalars['UUID']['output']
+  profileB: Profile
+  profileBId: Scalars['UUID']['output']
+}
+
+export type FriendConnection = {
+  __typename?: 'FriendConnection'
+  edges: Array<FriendEdge>
+  pageInfo: PageInfo
+}
+
+export type FriendEdge = {
+  __typename?: 'FriendEdge'
+  cursor: Scalars['String']['output']
+  node: Friend
+}
+
+export type FriendFilter = {
+  /** Returns true only if all its inner filters are true, otherwise returns false */
+  and?: InputMaybe<Array<FriendFilter>>
+  createdAt?: InputMaybe<DatetimeFilter>
+  id?: InputMaybe<UuidFilter>
+  nodeId?: InputMaybe<IdFilter>
+  /** Negates a filter */
+  not?: InputMaybe<FriendFilter>
+  /** Returns true if at least one of its inner filters is true, otherwise returns false */
+  or?: InputMaybe<Array<FriendFilter>>
+  profileAId?: InputMaybe<UuidFilter>
+  profileBId?: InputMaybe<UuidFilter>
+}
+
+export type FriendOrderBy = {
+  createdAt?: InputMaybe<OrderByDirection>
+  id?: InputMaybe<OrderByDirection>
+  profileAId?: InputMaybe<OrderByDirection>
+  profileBId?: InputMaybe<OrderByDirection>
+}
+
+export type FriendRequest = Node & {
+  __typename?: 'FriendRequest'
+  actionedAt?: Maybe<Scalars['Datetime']['output']>
+  createdAt: Scalars['Datetime']['output']
+  fromUser: Profile
+  fromUserId: Scalars['UUID']['output']
+  id: Scalars['UUID']['output']
+  /** Globally Unique Record Identifier */
+  nodeId: Scalars['ID']['output']
+  state: FriendRequestState
+  toUser: Profile
+  toUserId: Scalars['UUID']['output']
+}
+
+export type FriendRequestConnection = {
+  __typename?: 'FriendRequestConnection'
+  edges: Array<FriendRequestEdge>
+  pageInfo: PageInfo
+}
+
+export type FriendRequestEdge = {
+  __typename?: 'FriendRequestEdge'
+  cursor: Scalars['String']['output']
+  node: FriendRequest
+}
+
+export type FriendRequestFilter = {
+  actionedAt?: InputMaybe<DatetimeFilter>
+  /** Returns true only if all its inner filters are true, otherwise returns false */
+  and?: InputMaybe<Array<FriendRequestFilter>>
+  createdAt?: InputMaybe<DatetimeFilter>
+  fromUserId?: InputMaybe<UuidFilter>
+  id?: InputMaybe<UuidFilter>
+  nodeId?: InputMaybe<IdFilter>
+  /** Negates a filter */
+  not?: InputMaybe<FriendRequestFilter>
+  /** Returns true if at least one of its inner filters is true, otherwise returns false */
+  or?: InputMaybe<Array<FriendRequestFilter>>
+  state?: InputMaybe<FriendRequestStateFilter>
+  toUserId?: InputMaybe<UuidFilter>
+}
+
+export type FriendRequestInsertInput = {
+  toUserId?: InputMaybe<Scalars['UUID']['input']>
+}
+
+export type FriendRequestInsertResponse = {
+  __typename?: 'FriendRequestInsertResponse'
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']['output']
+  /** Array of records impacted by the mutation */
+  records: Array<FriendRequest>
+}
+
+export type FriendRequestOrderBy = {
+  actionedAt?: InputMaybe<OrderByDirection>
+  createdAt?: InputMaybe<OrderByDirection>
+  fromUserId?: InputMaybe<OrderByDirection>
+  id?: InputMaybe<OrderByDirection>
+  state?: InputMaybe<OrderByDirection>
+  toUserId?: InputMaybe<OrderByDirection>
+}
+
+export enum FriendRequestState {
+  Accepted = 'ACCEPTED',
+  Cancelled = 'CANCELLED',
+  Pending = 'PENDING',
+  Rejected = 'REJECTED',
+}
+
+/** Boolean expression comparing fields on type "FriendRequestState" */
+export type FriendRequestStateFilter = {
+  eq?: InputMaybe<FriendRequestState>
+  in?: InputMaybe<Array<FriendRequestState>>
+  is?: InputMaybe<FilterIs>
+  neq?: InputMaybe<FriendRequestState>
+}
+
+export type FriendRequestUpdateInput = {
+  state?: InputMaybe<FriendRequestState>
+}
+
+export type FriendRequestUpdateResponse = {
+  __typename?: 'FriendRequestUpdateResponse'
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']['output']
+  /** Array of records impacted by the mutation */
+  records: Array<FriendRequest>
+}
+
 /** Boolean expression comparing fields on type "ID" */
 export type IdFilter = {
   eq?: InputMaybe<Scalars['ID']['input']>
@@ -138,39 +274,31 @@ export type IntFilter = {
 /** The root type for creating and mutating data */
 export type Mutation = {
   __typename?: 'Mutation'
-  /** Deletes zero or more records from the `Things` collection */
-  deleteFromThingsCollection: ThingsDeleteResponse
-  /** Adds one or more `Things` records to the collection */
-  insertIntoThingsCollection?: Maybe<ThingsInsertResponse>
-  /** Updates zero or more records in the `Profiles` collection */
-  updateProfilesCollection: ProfilesUpdateResponse
-  /** Updates zero or more records in the `Things` collection */
-  updateThingsCollection: ThingsUpdateResponse
+  /** Adds one or more `FriendRequest` records to the collection */
+  insertIntoFriendRequestCollection?: Maybe<FriendRequestInsertResponse>
+  /** Updates zero or more records in the `FriendRequest` collection */
+  updateFriendRequestCollection: FriendRequestUpdateResponse
+  /** Updates zero or more records in the `Profile` collection */
+  updateProfileCollection: ProfileUpdateResponse
 }
 
 /** The root type for creating and mutating data */
-export type MutationDeleteFromThingsCollectionArgs = {
+export type MutationInsertIntoFriendRequestCollectionArgs = {
+  objects: Array<FriendRequestInsertInput>
+}
+
+/** The root type for creating and mutating data */
+export type MutationUpdateFriendRequestCollectionArgs = {
   atMost?: Scalars['Int']['input']
-  filter?: InputMaybe<ThingsFilter>
+  filter?: InputMaybe<FriendRequestFilter>
+  set: FriendRequestUpdateInput
 }
 
 /** The root type for creating and mutating data */
-export type MutationInsertIntoThingsCollectionArgs = {
-  objects: Array<ThingsInsertInput>
-}
-
-/** The root type for creating and mutating data */
-export type MutationUpdateProfilesCollectionArgs = {
+export type MutationUpdateProfileCollectionArgs = {
   atMost?: Scalars['Int']['input']
-  filter?: InputMaybe<ProfilesFilter>
-  set: ProfilesUpdateInput
-}
-
-/** The root type for creating and mutating data */
-export type MutationUpdateThingsCollectionArgs = {
-  atMost?: Scalars['Int']['input']
-  filter?: InputMaybe<ThingsFilter>
-  set: ThingsUpdateInput
+  filter?: InputMaybe<ProfileFilter>
+  set: ProfileUpdateInput
 }
 
 export type Node = {
@@ -204,81 +332,134 @@ export type PageInfo = {
   startCursor?: Maybe<Scalars['String']['output']>
 }
 
-export type Profiles = Node & {
-  __typename?: 'Profiles'
+export type Profile = Node & {
+  __typename?: 'Profile'
   avatarPath?: Maybe<Scalars['String']['output']>
   createdAt: Scalars['Datetime']['output']
+  friendCollection?: Maybe<FriendConnection>
+  friendRequestCollection?: Maybe<FriendRequestConnection>
   id: Scalars['UUID']['output']
   name: Scalars['String']['output']
   /** Globally Unique Record Identifier */
   nodeId: Scalars['ID']['output']
-  thingsCollection?: Maybe<ThingsConnection>
+  receivedFriendRequestCollection?: Maybe<FriendRequestConnection>
+  sentFriendRequestCollection?: Maybe<FriendRequestConnection>
 }
 
-export type ProfilesThingsCollectionArgs = {
+export type ProfileFriendCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>
   before?: InputMaybe<Scalars['Cursor']['input']>
-  filter?: InputMaybe<ThingsFilter>
+  filter?: InputMaybe<FriendFilter>
   first?: InputMaybe<Scalars['Int']['input']>
   last?: InputMaybe<Scalars['Int']['input']>
-  orderBy?: InputMaybe<Array<ThingsOrderBy>>
+  orderBy?: InputMaybe<Array<FriendOrderBy>>
 }
 
-export type ProfilesConnection = {
-  __typename?: 'ProfilesConnection'
-  edges: Array<ProfilesEdge>
+export type ProfileFriendRequestCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>
+  before?: InputMaybe<Scalars['Cursor']['input']>
+  filter?: InputMaybe<FriendRequestFilter>
+  first?: InputMaybe<Scalars['Int']['input']>
+  last?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<FriendRequestOrderBy>>
+}
+
+export type ProfileReceivedFriendRequestCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>
+  before?: InputMaybe<Scalars['Cursor']['input']>
+  filter?: InputMaybe<FriendRequestFilter>
+  first?: InputMaybe<Scalars['Int']['input']>
+  last?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<FriendRequestOrderBy>>
+}
+
+export type ProfileSentFriendRequestCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>
+  before?: InputMaybe<Scalars['Cursor']['input']>
+  filter?: InputMaybe<FriendRequestFilter>
+  first?: InputMaybe<Scalars['Int']['input']>
+  last?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<FriendRequestOrderBy>>
+}
+
+export type ProfileConnection = {
+  __typename?: 'ProfileConnection'
+  edges: Array<ProfileEdge>
   pageInfo: PageInfo
 }
 
-export type ProfilesEdge = {
-  __typename?: 'ProfilesEdge'
+export type ProfileEdge = {
+  __typename?: 'ProfileEdge'
   cursor: Scalars['String']['output']
-  node: Profiles
+  node: Profile
 }
 
-export type ProfilesFilter = {
+export type ProfileFilter = {
   /** Returns true only if all its inner filters are true, otherwise returns false */
-  and?: InputMaybe<Array<ProfilesFilter>>
+  and?: InputMaybe<Array<ProfileFilter>>
   avatarPath?: InputMaybe<StringFilter>
   createdAt?: InputMaybe<DatetimeFilter>
   id?: InputMaybe<UuidFilter>
   name?: InputMaybe<StringFilter>
   nodeId?: InputMaybe<IdFilter>
   /** Negates a filter */
-  not?: InputMaybe<ProfilesFilter>
+  not?: InputMaybe<ProfileFilter>
   /** Returns true if at least one of its inner filters is true, otherwise returns false */
-  or?: InputMaybe<Array<ProfilesFilter>>
+  or?: InputMaybe<Array<ProfileFilter>>
 }
 
-export type ProfilesOrderBy = {
+export type ProfileOrderBy = {
   avatarPath?: InputMaybe<OrderByDirection>
   createdAt?: InputMaybe<OrderByDirection>
   id?: InputMaybe<OrderByDirection>
   name?: InputMaybe<OrderByDirection>
 }
 
-export type ProfilesUpdateInput = {
+export type ProfileUpdateInput = {
   name?: InputMaybe<Scalars['String']['input']>
 }
 
-export type ProfilesUpdateResponse = {
-  __typename?: 'ProfilesUpdateResponse'
+export type ProfileUpdateResponse = {
+  __typename?: 'ProfileUpdateResponse'
   /** Count of the records impacted by the mutation */
   affectedCount: Scalars['Int']['output']
   /** Array of records impacted by the mutation */
-  records: Array<Profiles>
+  records: Array<Profile>
 }
 
 /** The root type for querying data */
 export type Query = {
   __typename?: 'Query'
+  /** A pagable collection of type `Friend` */
+  friendCollection?: Maybe<FriendConnection>
+  /** A pagable collection of type `FriendRequest` */
+  friendRequestCollection?: Maybe<FriendRequestConnection>
   /** Retrieve a record by its `ID` */
   node?: Maybe<Node>
-  /** A pagable collection of type `Profiles` */
-  profilesCollection?: Maybe<ProfilesConnection>
-  /** A pagable collection of type `Things` */
-  thingsCollection?: Maybe<ThingsConnection>
-  viewer?: Maybe<Profiles>
+  previewProfile?: Maybe<Profile>
+  /** A pagable collection of type `Profile` */
+  profileCollection?: Maybe<ProfileConnection>
+  viewer?: Maybe<Profile>
+}
+
+/** The root type for querying data */
+export type QueryFriendCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>
+  before?: InputMaybe<Scalars['Cursor']['input']>
+  filter?: InputMaybe<FriendFilter>
+  first?: InputMaybe<Scalars['Int']['input']>
+  last?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<FriendOrderBy>>
+}
+
+/** The root type for querying data */
+export type QueryFriendRequestCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>
+  before?: InputMaybe<Scalars['Cursor']['input']>
+  filter?: InputMaybe<FriendRequestFilter>
+  first?: InputMaybe<Scalars['Int']['input']>
+  last?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<FriendRequestOrderBy>>
 }
 
 /** The root type for querying data */
@@ -287,23 +468,18 @@ export type QueryNodeArgs = {
 }
 
 /** The root type for querying data */
-export type QueryProfilesCollectionArgs = {
-  after?: InputMaybe<Scalars['Cursor']['input']>
-  before?: InputMaybe<Scalars['Cursor']['input']>
-  filter?: InputMaybe<ProfilesFilter>
-  first?: InputMaybe<Scalars['Int']['input']>
-  last?: InputMaybe<Scalars['Int']['input']>
-  orderBy?: InputMaybe<Array<ProfilesOrderBy>>
+export type QueryPreviewProfileArgs = {
+  id?: InputMaybe<Scalars['UUID']['input']>
 }
 
 /** The root type for querying data */
-export type QueryThingsCollectionArgs = {
+export type QueryProfileCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>
   before?: InputMaybe<Scalars['Cursor']['input']>
-  filter?: InputMaybe<ThingsFilter>
+  filter?: InputMaybe<ProfileFilter>
   first?: InputMaybe<Scalars['Int']['input']>
   last?: InputMaybe<Scalars['Int']['input']>
-  orderBy?: InputMaybe<Array<ThingsOrderBy>>
+  orderBy?: InputMaybe<Array<ProfileOrderBy>>
 }
 
 /** Boolean expression comparing fields on type "String" */
@@ -321,88 +497,6 @@ export type StringFilter = {
   neq?: InputMaybe<Scalars['String']['input']>
   regex?: InputMaybe<Scalars['String']['input']>
   startsWith?: InputMaybe<Scalars['String']['input']>
-}
-
-export type Things = Node & {
-  __typename?: 'Things'
-  createdAt: Scalars['Datetime']['output']
-  id: Scalars['UUID']['output']
-  /** Globally Unique Record Identifier */
-  nodeId: Scalars['ID']['output']
-  profile?: Maybe<Profiles>
-  profileId?: Maybe<Scalars['UUID']['output']>
-  title: Scalars['String']['output']
-}
-
-export type ThingsConnection = {
-  __typename?: 'ThingsConnection'
-  edges: Array<ThingsEdge>
-  pageInfo: PageInfo
-}
-
-export type ThingsDeleteResponse = {
-  __typename?: 'ThingsDeleteResponse'
-  /** Count of the records impacted by the mutation */
-  affectedCount: Scalars['Int']['output']
-  /** Array of records impacted by the mutation */
-  records: Array<Things>
-}
-
-export type ThingsEdge = {
-  __typename?: 'ThingsEdge'
-  cursor: Scalars['String']['output']
-  node: Things
-}
-
-export type ThingsFilter = {
-  /** Returns true only if all its inner filters are true, otherwise returns false */
-  and?: InputMaybe<Array<ThingsFilter>>
-  createdAt?: InputMaybe<DatetimeFilter>
-  id?: InputMaybe<UuidFilter>
-  nodeId?: InputMaybe<IdFilter>
-  /** Negates a filter */
-  not?: InputMaybe<ThingsFilter>
-  /** Returns true if at least one of its inner filters is true, otherwise returns false */
-  or?: InputMaybe<Array<ThingsFilter>>
-  profileId?: InputMaybe<UuidFilter>
-  title?: InputMaybe<StringFilter>
-}
-
-export type ThingsInsertInput = {
-  createdAt?: InputMaybe<Scalars['Datetime']['input']>
-  id?: InputMaybe<Scalars['UUID']['input']>
-  profileId?: InputMaybe<Scalars['UUID']['input']>
-  title?: InputMaybe<Scalars['String']['input']>
-}
-
-export type ThingsInsertResponse = {
-  __typename?: 'ThingsInsertResponse'
-  /** Count of the records impacted by the mutation */
-  affectedCount: Scalars['Int']['output']
-  /** Array of records impacted by the mutation */
-  records: Array<Things>
-}
-
-export type ThingsOrderBy = {
-  createdAt?: InputMaybe<OrderByDirection>
-  id?: InputMaybe<OrderByDirection>
-  profileId?: InputMaybe<OrderByDirection>
-  title?: InputMaybe<OrderByDirection>
-}
-
-export type ThingsUpdateInput = {
-  createdAt?: InputMaybe<Scalars['Datetime']['input']>
-  id?: InputMaybe<Scalars['UUID']['input']>
-  profileId?: InputMaybe<Scalars['UUID']['input']>
-  title?: InputMaybe<Scalars['String']['input']>
-}
-
-export type ThingsUpdateResponse = {
-  __typename?: 'ThingsUpdateResponse'
-  /** Count of the records impacted by the mutation */
-  affectedCount: Scalars['Int']['output']
-  /** Array of records impacted by the mutation */
-  records: Array<Things>
 }
 
 /** Boolean expression comparing fields on type "Time" */
@@ -425,80 +519,176 @@ export type UuidFilter = {
   neq?: InputMaybe<Scalars['UUID']['input']>
 }
 
-export type AllThingsQueryVariables = Exact<{
-  cursor?: InputMaybe<Scalars['Cursor']['input']>
+export type FriendRequestItemFragment = {
+  __typename: 'FriendRequest'
+  nodeId: string
+  id: string
+  state: FriendRequestState
+  actionedAt?: string | null
+  toUser: { __typename: 'Profile'; nodeId: string; name: string }
+  fromUser: { __typename: 'Profile'; nodeId: string; name: string }
+}
+
+export type InsertFriendRequestMutationVariables = Exact<{
+  toUserId: Scalars['UUID']['input']
 }>
 
-export type AllThingsQuery = {
-  __typename: 'Query'
-  thingsCollection?: {
-    __typename: 'ThingsConnection'
-    edges: Array<{
-      __typename: 'ThingsEdge'
-      node: { __typename: 'Things'; nodeId: string; title: string }
+export type InsertFriendRequestMutation = {
+  __typename: 'Mutation'
+  insertIntoFriendRequestCollection?: {
+    __typename: 'FriendRequestInsertResponse'
+    records: Array<{
+      __typename: 'FriendRequest'
+      nodeId: string
+      id: string
+      state: FriendRequestState
+      actionedAt?: string | null
+      toUser: { __typename: 'Profile'; nodeId: string; name: string }
+      fromUser: { __typename: 'Profile'; nodeId: string; name: string }
     }>
-    pageInfo: {
-      __typename: 'PageInfo'
-      endCursor?: string | null
-      hasNextPage: boolean
-    }
   } | null
 }
 
-export type ThingQueryVariables = Exact<{
-  id: Scalars['ID']['input']
+export type UpdateFriendRequestMutationVariables = Exact<{
+  nodeId: Scalars['ID']['input']
+  state: FriendRequestState
 }>
 
-export type ThingQuery = {
+export type UpdateFriendRequestMutation = {
+  __typename: 'Mutation'
+  updateFriendRequestCollection: {
+    __typename: 'FriendRequestUpdateResponse'
+    records: Array<{
+      __typename: 'FriendRequest'
+      nodeId: string
+      id: string
+      state: FriendRequestState
+      actionedAt?: string | null
+      toUser: { __typename: 'Profile'; nodeId: string; name: string }
+      fromUser: { __typename: 'Profile'; nodeId: string; name: string }
+    }>
+  }
+}
+
+export type FriendRequestsQueryVariables = Exact<{ [key: string]: never }>
+
+export type FriendRequestsQuery = {
   __typename: 'Query'
-  thing?:
-    | { __typename: 'Profiles' }
-    | { __typename: 'Things'; createdAt: string; nodeId: string; title: string }
-    | null
+  viewer?: {
+    __typename: 'Profile'
+    receivedFriendRequestCollection?: {
+      __typename: 'FriendRequestConnection'
+      edges: Array<{
+        __typename: 'FriendRequestEdge'
+        node: {
+          __typename: 'FriendRequest'
+          nodeId: string
+          id: string
+          state: FriendRequestState
+          actionedAt?: string | null
+          toUser: { __typename: 'Profile'; nodeId: string; name: string }
+          fromUser: { __typename: 'Profile'; nodeId: string; name: string }
+        }
+      }>
+    } | null
+    sentFriendRequestCollection?: {
+      __typename: 'FriendRequestConnection'
+      edges: Array<{
+        __typename: 'FriendRequestEdge'
+        node: {
+          __typename: 'FriendRequest'
+          nodeId: string
+          id: string
+          state: FriendRequestState
+          actionedAt?: string | null
+          toUser: { __typename: 'Profile'; nodeId: string; name: string }
+          fromUser: { __typename: 'Profile'; nodeId: string; name: string }
+        }
+      }>
+    } | null
+  } | null
 }
 
-export type ThingItemFragment = {
-  __typename: 'Things'
-  nodeId: string
-  title: string
+export type PreviewProfileQueryVariables = Exact<{
+  id: Scalars['UUID']['input']
+}>
+
+export type PreviewProfileQuery = {
+  __typename: 'Query'
+  profile?: {
+    __typename: 'Profile'
+    nodeId: string
+    id: string
+    name: string
+    avatarPath?: string | null
+  } | null
 }
 
-export const ThingItemFragmentDoc = {
+export const FriendRequestItemFragmentDoc = {
   kind: 'Document',
   definitions: [
     {
       kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'ThingItem' },
+      name: { kind: 'Name', value: 'FriendRequestItem' },
       typeCondition: {
         kind: 'NamedType',
-        name: { kind: 'Name', value: 'Things' },
+        name: { kind: 'Name', value: 'FriendRequest' },
       },
       selectionSet: {
         kind: 'SelectionSet',
         selections: [
           { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
           { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'state' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'actionedAt' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'toUser' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+              ],
+            },
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'fromUser' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+              ],
+            },
+          },
         ],
       },
     },
   ],
-} as unknown as DocumentNode<ThingItemFragment, unknown>
-export const AllThingsDocument = {
+} as unknown as DocumentNode<FriendRequestItemFragment, unknown>
+export const InsertFriendRequestDocument = {
   kind: 'Document',
   definitions: [
     {
       kind: 'OperationDefinition',
-      operation: 'query',
-      name: { kind: 'Name', value: 'AllThings' },
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'InsertFriendRequest' },
       variableDefinitions: [
         {
           kind: 'VariableDefinition',
           variable: {
             kind: 'Variable',
-            name: { kind: 'Name', value: 'cursor' },
+            name: { kind: 'Name', value: 'toUserId' },
           },
-          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Cursor' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'UUID' } },
+          },
         },
       ],
       selectionSet: {
@@ -507,19 +697,28 @@ export const AllThingsDocument = {
           { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'thingsCollection' },
+            name: { kind: 'Name', value: 'insertIntoFriendRequestCollection' },
             arguments: [
               {
                 kind: 'Argument',
-                name: { kind: 'Name', value: 'first' },
-                value: { kind: 'IntValue', value: '1' },
-              },
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'after' },
+                name: { kind: 'Name', value: 'objects' },
                 value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'cursor' },
+                  kind: 'ListValue',
+                  values: [
+                    {
+                      kind: 'ObjectValue',
+                      fields: [
+                        {
+                          kind: 'ObjectField',
+                          name: { kind: 'Name', value: 'toUserId' },
+                          value: {
+                            kind: 'Variable',
+                            name: { kind: 'Name', value: 'toUserId' },
+                          },
+                        },
+                      ],
+                    },
+                  ],
                 },
               },
             ],
@@ -529,7 +728,7 @@ export const AllThingsDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
                 {
                   kind: 'Field',
-                  name: { kind: 'Name', value: 'edges' },
+                  name: { kind: 'Name', value: 'records' },
                   selectionSet: {
                     kind: 'SelectionSet',
                     selections: [
@@ -538,52 +737,8 @@ export const AllThingsDocument = {
                         name: { kind: 'Name', value: '__typename' },
                       },
                       {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'node' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: '__typename' },
-                            },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'nodeId' },
-                            },
-                            {
-                              kind: 'FragmentSpread',
-                              name: { kind: 'Name', value: 'ThingItem' },
-                              directives: [
-                                {
-                                  kind: 'Directive',
-                                  name: { kind: 'Name', value: 'nonreactive' },
-                                },
-                              ],
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'pageInfo' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: '__typename' },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'endCursor' },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'hasNextPage' },
+                        kind: 'FragmentSpread',
+                        name: { kind: 'Name', value: 'FriendRequestItem' },
                       },
                     ],
                   },
@@ -596,36 +751,82 @@ export const AllThingsDocument = {
     },
     {
       kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'ThingItem' },
+      name: { kind: 'Name', value: 'FriendRequestItem' },
       typeCondition: {
         kind: 'NamedType',
-        name: { kind: 'Name', value: 'Things' },
+        name: { kind: 'Name', value: 'FriendRequest' },
       },
       selectionSet: {
         kind: 'SelectionSet',
         selections: [
           { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
           { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'state' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'actionedAt' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'toUser' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+              ],
+            },
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'fromUser' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+              ],
+            },
+          },
         ],
       },
     },
   ],
-} as unknown as DocumentNode<AllThingsQuery, AllThingsQueryVariables>
-export const ThingDocument = {
+} as unknown as DocumentNode<
+  InsertFriendRequestMutation,
+  InsertFriendRequestMutationVariables
+>
+export const UpdateFriendRequestDocument = {
   kind: 'Document',
   definitions: [
     {
       kind: 'OperationDefinition',
-      operation: 'query',
-      name: { kind: 'Name', value: 'Thing' },
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'UpdateFriendRequest' },
       variableDefinitions: [
         {
           kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'nodeId' },
+          },
           type: {
             kind: 'NonNullType',
             type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'state' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'FriendRequestState' },
+            },
           },
         },
       ],
@@ -635,12 +836,426 @@ export const ThingDocument = {
           { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
           {
             kind: 'Field',
-            alias: { kind: 'Name', value: 'thing' },
-            name: { kind: 'Name', value: 'node' },
+            name: { kind: 'Name', value: 'updateFriendRequestCollection' },
             arguments: [
               {
                 kind: 'Argument',
-                name: { kind: 'Name', value: 'nodeId' },
+                name: { kind: 'Name', value: 'set' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'state' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'state' },
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'filter' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'nodeId' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'eq' },
+                            value: {
+                              kind: 'Variable',
+                              name: { kind: 'Name', value: 'nodeId' },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'records' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: '__typename' },
+                      },
+                      {
+                        kind: 'FragmentSpread',
+                        name: { kind: 'Name', value: 'FriendRequestItem' },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'FriendRequestItem' },
+      typeCondition: {
+        kind: 'NamedType',
+        name: { kind: 'Name', value: 'FriendRequest' },
+      },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'state' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'actionedAt' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'toUser' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+              ],
+            },
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'fromUser' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpdateFriendRequestMutation,
+  UpdateFriendRequestMutationVariables
+>
+export const FriendRequestsDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'FriendRequests' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'viewer' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                {
+                  kind: 'Field',
+                  name: {
+                    kind: 'Name',
+                    value: 'receivedFriendRequestCollection',
+                  },
+                  arguments: [
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'filter' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'state' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'eq' },
+                                  value: {
+                                    kind: 'EnumValue',
+                                    value: 'PENDING',
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'orderBy' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'createdAt' },
+                            value: {
+                              kind: 'EnumValue',
+                              value: 'DescNullsLast',
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: '__typename' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'edges' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: '__typename' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'node' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: '__typename' },
+                                  },
+                                  {
+                                    kind: 'FragmentSpread',
+                                    name: {
+                                      kind: 'Name',
+                                      value: 'FriendRequestItem',
+                                    },
+                                    directives: [
+                                      {
+                                        kind: 'Directive',
+                                        name: {
+                                          kind: 'Name',
+                                          value: 'nonreactive',
+                                        },
+                                      },
+                                    ],
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'sentFriendRequestCollection' },
+                  arguments: [
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'filter' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'state' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'eq' },
+                                  value: {
+                                    kind: 'EnumValue',
+                                    value: 'PENDING',
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'orderBy' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'createdAt' },
+                            value: {
+                              kind: 'EnumValue',
+                              value: 'DescNullsLast',
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: '__typename' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'edges' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: '__typename' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'node' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: '__typename' },
+                                  },
+                                  {
+                                    kind: 'FragmentSpread',
+                                    name: {
+                                      kind: 'Name',
+                                      value: 'FriendRequestItem',
+                                    },
+                                    directives: [
+                                      {
+                                        kind: 'Directive',
+                                        name: {
+                                          kind: 'Name',
+                                          value: 'nonreactive',
+                                        },
+                                      },
+                                    ],
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'FriendRequestItem' },
+      typeCondition: {
+        kind: 'NamedType',
+        name: { kind: 'Name', value: 'FriendRequest' },
+      },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'state' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'actionedAt' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'toUser' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+              ],
+            },
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'fromUser' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<FriendRequestsQuery, FriendRequestsQueryVariables>
+export const PreviewProfileDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'PreviewProfile' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'UUID' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          {
+            kind: 'Field',
+            alias: { kind: 'Name', value: 'profile' },
+            name: { kind: 'Name', value: 'previewProfile' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
                 value: {
                   kind: 'Variable',
                   name: { kind: 'Name', value: 'id' },
@@ -651,51 +1266,15 @@ export const ThingDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-                {
-                  kind: 'FragmentSpread',
-                  name: { kind: 'Name', value: 'ThingItem' },
-                },
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'Things' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: '__typename' },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'createdAt' },
-                      },
-                    ],
-                  },
-                },
+                { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'avatarPath' } },
               ],
             },
           },
         ],
       },
     },
-    {
-      kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'ThingItem' },
-      typeCondition: {
-        kind: 'NamedType',
-        name: { kind: 'Name', value: 'Things' },
-      },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'title' } },
-        ],
-      },
-    },
   ],
-} as unknown as DocumentNode<ThingQuery, ThingQueryVariables>
+} as unknown as DocumentNode<PreviewProfileQuery, PreviewProfileQueryVariables>
