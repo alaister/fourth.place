@@ -16,6 +16,8 @@ create policy select_own_friends on public.friends for
 select
   using ("profile_a_id" = auth.uid ());
 
+create policy delete_own_friends on public.friends for delete using ("profile_a_id" = auth.uid ());
+
 revoke all on table public.friends
 from
   anon,
@@ -23,7 +25,8 @@ from
 
 grant
 select
-  on table public.friends to anon,
+,
+  delete on table public.friends to anon,
   authenticated;
 
 comment on table public.friends is e'@graphql({
@@ -39,6 +42,21 @@ comment on table public.friends is e'@graphql({
     }
   ]
 })';
+
+create function private.handle_deleted_friend () returns trigger as $$
+begin
+  delete from public.friends f
+  where
+    f."profile_a_id" = old."profile_b_id"
+    and f."profile_b_id" = old."profile_a_id";
+
+  return old;
+end;
+$$ language plpgsql security definer;
+
+create trigger on_friend_deleted
+after delete on public.friends for each row
+execute procedure private.handle_deleted_friend ();
 
 -- Friend Requests
 create type public.friend_request_state as enum('PENDING', 'CANCELLED', 'REJECTED', 'ACCEPTED');

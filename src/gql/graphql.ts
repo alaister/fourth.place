@@ -124,7 +124,6 @@ export type Friend = Node & {
   id: Scalars['UUID']['output']
   /** Globally Unique Record Identifier */
   nodeId: Scalars['ID']['output']
-  profile: Profile
   profileA: Profile
   profileAId: Scalars['UUID']['output']
   profileB: Profile
@@ -135,6 +134,14 @@ export type FriendConnection = {
   __typename?: 'FriendConnection'
   edges: Array<FriendEdge>
   pageInfo: PageInfo
+}
+
+export type FriendDeleteResponse = {
+  __typename?: 'FriendDeleteResponse'
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']['output']
+  /** Array of records impacted by the mutation */
+  records: Array<Friend>
 }
 
 export type FriendEdge = {
@@ -274,12 +281,20 @@ export type IntFilter = {
 /** The root type for creating and mutating data */
 export type Mutation = {
   __typename?: 'Mutation'
+  /** Deletes zero or more records from the `Friend` collection */
+  deleteFromFriendCollection: FriendDeleteResponse
   /** Adds one or more `FriendRequest` records to the collection */
   insertIntoFriendRequestCollection?: Maybe<FriendRequestInsertResponse>
   /** Updates zero or more records in the `FriendRequest` collection */
   updateFriendRequestCollection: FriendRequestUpdateResponse
   /** Updates zero or more records in the `Profile` collection */
   updateProfileCollection: ProfileUpdateResponse
+}
+
+/** The root type for creating and mutating data */
+export type MutationDeleteFromFriendCollectionArgs = {
+  atMost?: Scalars['Int']['input']
+  filter?: InputMaybe<FriendFilter>
 }
 
 /** The root type for creating and mutating data */
@@ -519,6 +534,13 @@ export type UuidFilter = {
   neq?: InputMaybe<Scalars['UUID']['input']>
 }
 
+export type FriendItemFragment = {
+  __typename: 'Friend'
+  id: string
+  nodeId: string
+  profile: { __typename: 'Profile'; nodeId: string; id: string; name: string }
+}
+
 export type FriendRequestItemFragment = {
   __typename: 'FriendRequest'
   nodeId: string
@@ -527,6 +549,28 @@ export type FriendRequestItemFragment = {
   actionedAt?: string | null
   toUser: { __typename: 'Profile'; nodeId: string; name: string }
   fromUser: { __typename: 'Profile'; nodeId: string; name: string }
+}
+
+export type DeleteFriendMutationVariables = Exact<{
+  nodeId: Scalars['ID']['input']
+}>
+
+export type DeleteFriendMutation = {
+  __typename: 'Mutation'
+  deleteFromFriendCollection: {
+    __typename: 'FriendDeleteResponse'
+    records: Array<{
+      __typename: 'Friend'
+      id: string
+      nodeId: string
+      profile: {
+        __typename: 'Profile'
+        nodeId: string
+        id: string
+        name: string
+      }
+    }>
+  }
 }
 
 export type InsertFriendRequestMutationVariables = Exact<{
@@ -609,6 +653,33 @@ export type FriendRequestsQuery = {
   } | null
 }
 
+export type FriendsQueryVariables = Exact<{ [key: string]: never }>
+
+export type FriendsQuery = {
+  __typename: 'Query'
+  viewer?: {
+    __typename: 'Profile'
+    nodeId: string
+    friendCollection?: {
+      __typename: 'FriendConnection'
+      edges: Array<{
+        __typename: 'FriendEdge'
+        node: {
+          __typename: 'Friend'
+          nodeId: string
+          id: string
+          profile: {
+            __typename: 'Profile'
+            nodeId: string
+            id: string
+            name: string
+          }
+        }
+      }>
+    } | null
+  } | null
+}
+
 export type PreviewProfileQueryVariables = Exact<{
   id: Scalars['UUID']['input']
 }>
@@ -624,6 +695,41 @@ export type PreviewProfileQuery = {
   } | null
 }
 
+export const FriendItemFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'FriendItem' },
+      typeCondition: {
+        kind: 'NamedType',
+        name: { kind: 'Name', value: 'Friend' },
+      },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
+          {
+            kind: 'Field',
+            alias: { kind: 'Name', value: 'profile' },
+            name: { kind: 'Name', value: 'profileB' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<FriendItemFragment, unknown>
 export const FriendRequestItemFragmentDoc = {
   kind: 'Document',
   definitions: [
@@ -671,6 +777,123 @@ export const FriendRequestItemFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<FriendRequestItemFragment, unknown>
+export const DeleteFriendDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'DeleteFriend' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'nodeId' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'deleteFromFriendCollection' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'filter' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'nodeId' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'eq' },
+                            value: {
+                              kind: 'Variable',
+                              name: { kind: 'Name', value: 'nodeId' },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'records' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: '__typename' },
+                      },
+                      {
+                        kind: 'FragmentSpread',
+                        name: { kind: 'Name', value: 'FriendItem' },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'FriendItem' },
+      typeCondition: {
+        kind: 'NamedType',
+        name: { kind: 'Name', value: 'Friend' },
+      },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
+          {
+            kind: 'Field',
+            alias: { kind: 'Name', value: 'profile' },
+            name: { kind: 'Name', value: 'profileB' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  DeleteFriendMutation,
+  DeleteFriendMutationVariables
+>
 export const InsertFriendRequestDocument = {
   kind: 'Document',
   definitions: [
@@ -1227,6 +1450,119 @@ export const FriendRequestsDocument = {
     },
   ],
 } as unknown as DocumentNode<FriendRequestsQuery, FriendRequestsQueryVariables>
+export const FriendsDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'Friends' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'viewer' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'friendCollection' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: '__typename' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'edges' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: '__typename' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'node' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: '__typename' },
+                                  },
+                                  {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'nodeId' },
+                                  },
+                                  {
+                                    kind: 'FragmentSpread',
+                                    name: { kind: 'Name', value: 'FriendItem' },
+                                    directives: [
+                                      {
+                                        kind: 'Directive',
+                                        name: {
+                                          kind: 'Name',
+                                          value: 'nonreactive',
+                                        },
+                                      },
+                                    ],
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'FriendItem' },
+      typeCondition: {
+        kind: 'NamedType',
+        name: { kind: 'Name', value: 'Friend' },
+      },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
+          {
+            kind: 'Field',
+            alias: { kind: 'Name', value: 'profile' },
+            name: { kind: 'Name', value: 'profileB' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<FriendsQuery, FriendsQueryVariables>
 export const PreviewProfileDocument = {
   kind: 'Document',
   definitions: [
