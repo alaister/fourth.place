@@ -5,6 +5,7 @@ import { graphql } from '~/gql'
 export const FriendRequestsQuery = graphql(/* GraphQL */ `
   query FriendRequests {
     viewer {
+      nodeId
       receivedFriendRequestCollection(
         filter: { state: { eq: PENDING } }
         orderBy: { createdAt: DescNullsLast }

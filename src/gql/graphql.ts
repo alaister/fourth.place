@@ -620,6 +620,7 @@ export type FriendRequestsQuery = {
   __typename: 'Query'
   viewer?: {
     __typename: 'Profile'
+    nodeId: string
     receivedFriendRequestCollection?: {
       __typename: 'FriendRequestConnection'
       edges: Array<{
@@ -1197,6 +1198,7 @@ export const FriendRequestsDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
                 {
                   kind: 'Field',
                   name: {
