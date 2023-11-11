@@ -12,16 +12,20 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
-      "usesAppleSignIn": true
+      "usesAppleSignIn": true,
+      "bundleIdentifier": "place.fourth.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "place.fourth.app"
     },
     "web": {
       "bundler": "metro",
@@ -31,6 +35,7 @@
     "plugins": [
       "expo-router",
       "expo-apple-authentication",
+      "@react-native-google-signin/google-signin",
       "expo-notifications"
     ],
     "experiments": {

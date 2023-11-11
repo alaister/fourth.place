@@ -51,6 +51,13 @@ secret = "unused_secret"
 redirect_uri = ""
 url = ""
 
+[auth.external.google]
+enabled = true
+client_id = "825660114030-4fbdo4kep3smjbuuipvci2de2j940lpd.apps.googleusercontent.com"
+secret = "unused_secret"
+redirect_uri = ""
+url = ""
+
 [analytics]
 enabled = false
 port = 54327
