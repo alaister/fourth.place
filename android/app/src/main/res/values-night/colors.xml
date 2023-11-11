@@ -1,1 +1,6 @@
-<resources/>
+<?xml version="1.0"?>
+<resources>
+  <!--Generated code with RNPC starts, changes will be overridden-->
+  <color name="rnpc_background">#000000</color>
+  <!--Generated code ends-->
+</resources>

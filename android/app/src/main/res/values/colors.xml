@@ -1,4 +1,9 @@
+<?xml version="1.0"?>
 <resources>
+  <!--Generated code with RNPC starts, changes will be overridden-->
+  <color name="rnpc_background">#ffffff</color>
+  <color name="rnpc_accent">#ffc0cb</color>
+  <!--Generated code ends-->
   <color name="splashscreen_background">#ffffff</color>
   <color name="iconBackground">#ffffff</color>
   <color name="colorPrimary">#023c69</color>

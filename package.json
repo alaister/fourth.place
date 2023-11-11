@@ -57,6 +57,7 @@
     "@grafbase/sdk": "^0.7.1",
     "@graphql-codegen/cli": "5.0.0",
     "@graphql-codegen/client-preset": "4.1.0",
+    "@klarna/platform-colors": "^0.4.0",
     "@types/react": "~18.2.14",
     "eslint": "^8.51.0",
     "eslint-config-universe": "^12.0.0",
