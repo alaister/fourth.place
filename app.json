@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "fourth.place",
+    "name": "Fourth Place",
     "slug": "fourth-place",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -34,6 +34,7 @@
       "expo-router",
       "expo-apple-authentication",
       "@react-native-google-signin/google-signin",
+      "expo-location",
       "expo-notifications"
     ],
     "experiments": {

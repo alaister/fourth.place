@@ -144,6 +144,47 @@ export type FriendDeleteResponse = {
   records: Array<Friend>
 }
 
+export type FriendDistance = Node & {
+  __typename?: 'FriendDistance'
+  distance?: Maybe<Scalars['Float']['output']>
+  id?: Maybe<Scalars['UUID']['output']>
+  /** Globally Unique Record Identifier */
+  nodeId: Scalars['ID']['output']
+  profile?: Maybe<Profile>
+  updatedAt?: Maybe<Scalars['Datetime']['output']>
+}
+
+export type FriendDistanceConnection = {
+  __typename?: 'FriendDistanceConnection'
+  edges: Array<FriendDistanceEdge>
+  pageInfo: PageInfo
+}
+
+export type FriendDistanceEdge = {
+  __typename?: 'FriendDistanceEdge'
+  cursor: Scalars['String']['output']
+  node: FriendDistance
+}
+
+export type FriendDistanceFilter = {
+  /** Returns true only if all its inner filters are true, otherwise returns false */
+  and?: InputMaybe<Array<FriendDistanceFilter>>
+  distance?: InputMaybe<FloatFilter>
+  id?: InputMaybe<UuidFilter>
+  nodeId?: InputMaybe<IdFilter>
+  /** Negates a filter */
+  not?: InputMaybe<FriendDistanceFilter>
+  /** Returns true if at least one of its inner filters is true, otherwise returns false */
+  or?: InputMaybe<Array<FriendDistanceFilter>>
+  updatedAt?: InputMaybe<DatetimeFilter>
+}
+
+export type FriendDistanceOrderBy = {
+  distance?: InputMaybe<OrderByDirection>
+  id?: InputMaybe<OrderByDirection>
+  updatedAt?: InputMaybe<OrderByDirection>
+}
+
 export type FriendEdge = {
   __typename?: 'FriendEdge'
   cursor: Scalars['String']['output']
@@ -289,6 +330,7 @@ export type Mutation = {
   updateFriendRequestCollection: FriendRequestUpdateResponse
   /** Updates zero or more records in the `Profile` collection */
   updateProfileCollection: ProfileUpdateResponse
+  updateUserLocation?: Maybe<Scalars['Opaque']['output']>
 }
 
 /** The root type for creating and mutating data */
@@ -314,6 +356,12 @@ export type MutationUpdateProfileCollectionArgs = {
   atMost?: Scalars['Int']['input']
   filter?: InputMaybe<ProfileFilter>
   set: ProfileUpdateInput
+}
+
+/** The root type for creating and mutating data */
+export type MutationUpdateUserLocationArgs = {
+  latitude?: InputMaybe<Scalars['Float']['input']>
+  longitude?: InputMaybe<Scalars['Float']['input']>
 }
 
 export type Node = {
@@ -352,6 +400,7 @@ export type Profile = Node & {
   avatarPath?: Maybe<Scalars['String']['output']>
   createdAt: Scalars['Datetime']['output']
   friendCollection?: Maybe<FriendConnection>
+  friendDistance: FriendDistance
   friendRequestCollection?: Maybe<FriendRequestConnection>
   id: Scalars['UUID']['output']
   name: Scalars['String']['output']
@@ -447,6 +496,8 @@ export type Query = {
   __typename?: 'Query'
   /** A pagable collection of type `Friend` */
   friendCollection?: Maybe<FriendConnection>
+  /** A pagable collection of type `FriendDistance` */
+  friendDistanceCollection?: Maybe<FriendDistanceConnection>
   /** A pagable collection of type `FriendRequest` */
   friendRequestCollection?: Maybe<FriendRequestConnection>
   /** Retrieve a record by its `ID` */
@@ -454,6 +505,8 @@ export type Query = {
   previewProfile?: Maybe<Profile>
   /** A pagable collection of type `Profile` */
   profileCollection?: Maybe<ProfileConnection>
+  /** A pagable collection of type `spatial_ref_sys` */
+  spatial_ref_sysCollection?: Maybe<Spatial_Ref_SysConnection>
   viewer?: Maybe<Profile>
 }
 
@@ -465,6 +518,16 @@ export type QueryFriendCollectionArgs = {
   first?: InputMaybe<Scalars['Int']['input']>
   last?: InputMaybe<Scalars['Int']['input']>
   orderBy?: InputMaybe<Array<FriendOrderBy>>
+}
+
+/** The root type for querying data */
+export type QueryFriendDistanceCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>
+  before?: InputMaybe<Scalars['Cursor']['input']>
+  filter?: InputMaybe<FriendDistanceFilter>
+  first?: InputMaybe<Scalars['Int']['input']>
+  last?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<FriendDistanceOrderBy>>
 }
 
 /** The root type for querying data */
@@ -495,6 +558,16 @@ export type QueryProfileCollectionArgs = {
   first?: InputMaybe<Scalars['Int']['input']>
   last?: InputMaybe<Scalars['Int']['input']>
   orderBy?: InputMaybe<Array<ProfileOrderBy>>
+}
+
+/** The root type for querying data */
+export type QuerySpatial_Ref_SysCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>
+  before?: InputMaybe<Scalars['Cursor']['input']>
+  filter?: InputMaybe<Spatial_Ref_SysFilter>
+  first?: InputMaybe<Scalars['Int']['input']>
+  last?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<Spatial_Ref_SysOrderBy>>
 }
 
 /** Boolean expression comparing fields on type "String" */
@@ -534,11 +607,68 @@ export type UuidFilter = {
   neq?: InputMaybe<Scalars['UUID']['input']>
 }
 
+export type Spatial_Ref_Sys = Node & {
+  __typename?: 'spatial_ref_sys'
+  auth_name?: Maybe<Scalars['String']['output']>
+  auth_srid?: Maybe<Scalars['Int']['output']>
+  /** Globally Unique Record Identifier */
+  nodeId: Scalars['ID']['output']
+  proj4text?: Maybe<Scalars['String']['output']>
+  srid: Scalars['Int']['output']
+  srtext?: Maybe<Scalars['String']['output']>
+}
+
+export type Spatial_Ref_SysConnection = {
+  __typename?: 'spatial_ref_sysConnection'
+  edges: Array<Spatial_Ref_SysEdge>
+  pageInfo: PageInfo
+}
+
+export type Spatial_Ref_SysEdge = {
+  __typename?: 'spatial_ref_sysEdge'
+  cursor: Scalars['String']['output']
+  node: Spatial_Ref_Sys
+}
+
+export type Spatial_Ref_SysFilter = {
+  /** Returns true only if all its inner filters are true, otherwise returns false */
+  and?: InputMaybe<Array<Spatial_Ref_SysFilter>>
+  auth_name?: InputMaybe<StringFilter>
+  auth_srid?: InputMaybe<IntFilter>
+  nodeId?: InputMaybe<IdFilter>
+  /** Negates a filter */
+  not?: InputMaybe<Spatial_Ref_SysFilter>
+  /** Returns true if at least one of its inner filters is true, otherwise returns false */
+  or?: InputMaybe<Array<Spatial_Ref_SysFilter>>
+  proj4text?: InputMaybe<StringFilter>
+  srid?: InputMaybe<IntFilter>
+  srtext?: InputMaybe<StringFilter>
+}
+
+export type Spatial_Ref_SysOrderBy = {
+  auth_name?: InputMaybe<OrderByDirection>
+  auth_srid?: InputMaybe<OrderByDirection>
+  proj4text?: InputMaybe<OrderByDirection>
+  srid?: InputMaybe<OrderByDirection>
+  srtext?: InputMaybe<OrderByDirection>
+}
+
 export type FriendItemFragment = {
   __typename: 'Friend'
   id: string
   nodeId: string
-  profile: { __typename: 'Profile'; nodeId: string; id: string; name: string }
+  profile: {
+    __typename: 'Profile'
+    nodeId: string
+    id: string
+    name: string
+    friendDistance: {
+      __typename: 'FriendDistance'
+      nodeId: string
+      distance?: number | null
+      updatedAt?: string | null
+    }
+  }
 }
 
 export type FriendRequestItemFragment = {
@@ -568,6 +698,12 @@ export type DeleteFriendMutation = {
         nodeId: string
         id: string
         name: string
+        friendDistance: {
+          __typename: 'FriendDistance'
+          nodeId: string
+          distance?: number | null
+          updatedAt?: string | null
+        }
       }
     }>
   }
@@ -674,6 +810,12 @@ export type FriendsQuery = {
             nodeId: string
             id: string
             name: string
+            friendDistance: {
+              __typename: 'FriendDistance'
+              nodeId: string
+              distance?: number | null
+              updatedAt?: string | null
+            }
           }
         }
       }>
@@ -723,6 +865,31 @@ export const FriendItemFragmentDoc = {
                 { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'friendDistance' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: '__typename' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'nodeId' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'distance' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'updatedAt' },
+                      },
+                    ],
+                  },
+                },
               ],
             },
           },
@@ -884,6 +1051,31 @@ export const DeleteFriendDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'friendDistance' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: '__typename' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'nodeId' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'distance' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'updatedAt' },
+                      },
+                    ],
+                  },
+                },
               ],
             },
           },
@@ -1557,6 +1749,31 @@ export const FriendsDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'friendDistance' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: '__typename' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'nodeId' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'distance' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'updatedAt' },
+                      },
+                    ],
+                  },
+                },
               ],
             },
           },

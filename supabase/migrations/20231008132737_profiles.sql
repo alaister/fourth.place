@@ -3,7 +3,7 @@ create table
     "id" uuid not null primary key references auth.users (id) on update cascade on delete cascade,
     "created_at" timestamp with time zone not null default now(),
     "name" text not null default 'Anonymous',
-    avatar_path text
+    "avatar_path" text
   );
 
 alter table public.profiles enable row level security;

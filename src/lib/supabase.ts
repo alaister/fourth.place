@@ -3,6 +3,8 @@ import { createClient } from '@supabase/supabase-js'
 import { Platform } from 'react-native'
 import { setupURLPolyfill } from 'react-native-url-polyfill'
 
+import { Database } from './database.types'
+
 const isNative = Platform.OS !== 'web'
 
 if (isNative) {
@@ -21,7 +23,7 @@ if (!SUPABASE_ANON_KEY) {
 
 export const AUTH_STORAGE_KEY = 'supabase-auth-token'
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: {
     ...(isNative && {
       storage: AsyncStorage,

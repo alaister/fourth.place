@@ -1,83 +1,72 @@
+import * as Location from 'expo-location'
 import { Link } from 'expo-router'
-import { useState } from 'react'
-import { FlatList, RefreshControl, StyleSheet, Text, View } from 'react-native'
+import { X } from 'lucide-react-native'
+import { useCallback } from 'react'
+import { FlatList, Pressable, RefreshControl, View } from 'react-native'
 
-import FriendRequest from '~/components/FriendRequest'
-import { useFriendRequestsQuery } from '~/lib/queries/friend-requests-query'
+import Friend from '~/components/Friend'
+import { useDeleteFriendMutation } from '~/lib/mutations/delete-friend-mutation'
+import { useFriendsQuery } from '~/lib/queries/friends-query'
+import { updateUserLocation } from '~/lib/tasks'
+import { useRefresh } from '~/lib/utils'
 
-export default function FriendsScreen() {
-  const { data, refetch, loading } = useFriendRequestsQuery()
+export default function FriendsListScreen() {
+  const { data, refetch } = useFriendsQuery()
+  const [isRefetching, onRefresh] = useRefresh(
+    useCallback(async () => {
+      try {
+        const location = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Low,
+        })
 
-  const [isRefetching, setIsRefetching] = useState(false)
-  const onRefresh = () => {
-    setIsRefetching(true)
+        await updateUserLocation(location.coords)
 
-    refetch().finally(() => {
-      setIsRefetching(false)
-    })
-  }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (_) {
+        // ignore error
+      }
 
-  const receivedFriendRequests =
-    data?.viewer?.receivedFriendRequestCollection?.edges.map(({ node }) => ({
-      ...node,
-      type: 'received' as const,
-    })) ?? []
-  const sentFriendRequests =
-    data?.viewer?.sentFriendRequestCollection?.edges.map(({ node }) => ({
-      ...node,
-      type: 'sent' as const,
-    })) ?? []
+      await refetch()
+    }, [refetch]),
+  )
 
-  const lastReceivedFriendRequestId: string | undefined =
-    receivedFriendRequests[receivedFriendRequests.length - 1]?.id
-  const allFriendRequests = [...receivedFriendRequests, ...sentFriendRequests]
+  const friends = data?.viewer?.friendCollection?.edges.map(({ node }) => node)
+
+  const [deleteFriend] = useDeleteFriendMutation()
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Friends</Text>
-
-      <Link href="/(authenticated)/(tabs)/friends/list">All Friends</Link>
-
+    <View style={{ flex: 1 }}>
       <FlatList
-        data={allFriendRequests}
+        data={friends}
+        renderItem={({ item }) => (
+          <Friend
+            friendNodeId={item.nodeId}
+            action={
+              <Pressable
+                onPress={() => {
+                  deleteFriend({
+                    variables: {
+                      nodeId: item.nodeId,
+                    },
+                  })
+                }}
+              >
+                {({ pressed }) => <X />}
+              </Pressable>
+            }
+          />
+        )}
         refreshControl={
           <RefreshControl refreshing={isRefetching} onRefresh={onRefresh} />
         }
-        ItemSeparatorComponent={({ leadingItem }) => {
-          if (
-            lastReceivedFriendRequestId !== undefined &&
-            leadingItem?.id === lastReceivedFriendRequestId
-          ) {
-            return (
-              <View>
-                <Text>Sent Friend Requests</Text>
-              </View>
-            )
-          }
-
-          return null
-        }}
-        renderItem={({ item }) => (
-          <FriendRequest friendRequestNodeId={item.nodeId} type={item.type} />
-        )}
+        ListHeaderComponent={
+          <View>
+            <Link href="/(authenticated)/(tabs)/friends/requests">
+              Requests
+            </Link>
+          </View>
+        }
       />
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-})

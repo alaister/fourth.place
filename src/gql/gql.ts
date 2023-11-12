@@ -13,7 +13,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-  '\n  fragment FriendItem on Friend {\n    id\n    nodeId\n    profile: profileB {\n      nodeId\n      id\n      name\n    }\n  }\n':
+  '\n  fragment FriendItem on Friend {\n    id\n    nodeId\n    profile: profileB {\n      nodeId\n      id\n      name\n      friendDistance {\n        nodeId\n        distance\n        updatedAt\n      }\n    }\n  }\n':
     types.FriendItemFragmentDoc,
   '\n  fragment FriendRequestItem on FriendRequest {\n    nodeId\n    id\n    state\n    actionedAt\n    toUser {\n      nodeId\n      name\n    }\n    fromUser {\n      nodeId\n      name\n    }\n  }\n':
     types.FriendRequestItemFragmentDoc,
@@ -49,8 +49,8 @@ export function graphql(source: string): unknown
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  fragment FriendItem on Friend {\n    id\n    nodeId\n    profile: profileB {\n      nodeId\n      id\n      name\n    }\n  }\n',
-): (typeof documents)['\n  fragment FriendItem on Friend {\n    id\n    nodeId\n    profile: profileB {\n      nodeId\n      id\n      name\n    }\n  }\n']
+  source: '\n  fragment FriendItem on Friend {\n    id\n    nodeId\n    profile: profileB {\n      nodeId\n      id\n      name\n      friendDistance {\n        nodeId\n        distance\n        updatedAt\n      }\n    }\n  }\n',
+): (typeof documents)['\n  fragment FriendItem on Friend {\n    id\n    nodeId\n    profile: profileB {\n      nodeId\n      id\n      name\n      friendDistance {\n        nodeId\n        distance\n        updatedAt\n      }\n    }\n  }\n']
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

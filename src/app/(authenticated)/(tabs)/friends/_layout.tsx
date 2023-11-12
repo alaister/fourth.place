@@ -3,10 +3,10 @@ import { Stack } from 'expo-router'
 export default function FriendsLayout() {
   return (
     <Stack>
-      <Stack.Screen name="index" options={{ title: 'Friend Requests' }} />
+      <Stack.Screen name="index" options={{ title: 'Friends' }} />
       <Stack.Screen
-        name="list"
-        options={{ title: 'Friends', headerBackTitleVisible: false }}
+        name="requests"
+        options={{ title: 'Friend Requests', headerBackTitleVisible: false }}
       />
     </Stack>
   )

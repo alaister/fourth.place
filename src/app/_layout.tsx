@@ -19,6 +19,7 @@ import { Provider as ReduxProvider } from 'react-redux'
 
 import { getApolloClient, setupApolloClient } from '~/lib/apollo'
 import { useAuthListener } from '~/lib/auth'
+import { useStartBackgroundLocationUpdates } from '~/lib/tasks'
 import { loadInitialAuthState, store } from '~/store'
 export { ErrorBoundary } from 'expo-router'
 
@@ -29,6 +30,7 @@ const RootLayout = () => {
   const [isAppReady, setIsAppReady] = useState(false)
 
   useAuthListener(store.dispatch)
+  useStartBackgroundLocationUpdates()
 
   useEffect(() => {
     async function prepare() {
