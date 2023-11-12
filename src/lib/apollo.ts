@@ -90,5 +90,10 @@ export async function setupApolloClient() {
   apolloClient = new ApolloClient({
     link: authLink.concat(httpLink),
     cache,
+    defaultOptions: {
+      watchQuery: {
+        fetchPolicy: 'cache-and-network',
+      },
+    },
   })
 }

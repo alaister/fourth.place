@@ -17,7 +17,6 @@ const ProfileScreen = () => {
     () => Linking.createURL(`/add-friend/${user?.id}`),
     [user?.id],
   )
-  console.log('friendAddUrl:', friendAddUrl)
 
   return (
     <View>
