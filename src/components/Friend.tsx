@@ -2,9 +2,10 @@ import { useFragment } from '@apollo/client'
 import { formatDistanceToNow } from 'date-fns'
 import { ArrowUpRight } from 'lucide-react-native'
 import { ReactNode } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { Image, StyleSheet, Text, View } from 'react-native'
 
 import { graphql } from '~/gql'
+import { getAvatarUrl } from '~/lib/avatars'
 import { formatDistance } from '~/lib/formatters'
 
 const FriendItemFragment = graphql(/* GraphQL */ `
@@ -15,6 +16,7 @@ const FriendItemFragment = graphql(/* GraphQL */ `
       nodeId
       id
       name
+      avatarPath
       friendDistance {
         nodeId
         distance
@@ -45,6 +47,11 @@ const Friend = ({ friendNodeId, action }: FriendProps) => {
 
   return (
     <View style={styles.wrapper}>
+      <Image
+        source={{ uri: getAvatarUrl(data.profile.avatarPath ?? null) }}
+        style={{ width: 40, height: 40, borderRadius: 99999 }}
+      />
+
       <Text>{data.profile.name}</Text>
       <View style={styles.distanceWrapper}>
         <ArrowUpRight size={16} />

@@ -662,6 +662,7 @@ export type FriendItemFragment = {
     nodeId: string
     id: string
     name: string
+    avatarPath?: string | null
     friendDistance: {
       __typename: 'FriendDistance'
       nodeId: string
@@ -681,6 +682,13 @@ export type FriendRequestItemFragment = {
   fromUser: { __typename: 'Profile'; nodeId: string; name: string }
 }
 
+export type ProfileItemFragment = {
+  __typename: 'Profile'
+  nodeId: string
+  name: string
+  avatarPath?: string | null
+}
+
 export type DeleteFriendMutationVariables = Exact<{
   nodeId: Scalars['ID']['input']
 }>
@@ -698,6 +706,7 @@ export type DeleteFriendMutation = {
         nodeId: string
         id: string
         name: string
+        avatarPath?: string | null
         friendDistance: {
           __typename: 'FriendDistance'
           nodeId: string
@@ -810,6 +819,7 @@ export type FriendsQuery = {
             nodeId: string
             id: string
             name: string
+            avatarPath?: string | null
             friendDistance: {
               __typename: 'FriendDistance'
               nodeId: string
@@ -833,6 +843,18 @@ export type PreviewProfileQuery = {
     __typename: 'Profile'
     nodeId: string
     id: string
+    name: string
+    avatarPath?: string | null
+  } | null
+}
+
+export type ViewerQueryVariables = Exact<{ [key: string]: never }>
+
+export type ViewerQuery = {
+  __typename: 'Query'
+  viewer?: {
+    __typename: 'Profile'
+    nodeId: string
     name: string
     avatarPath?: string | null
   } | null
@@ -865,6 +887,7 @@ export const FriendItemFragmentDoc = {
                 { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'avatarPath' } },
                 {
                   kind: 'Field',
                   name: { kind: 'Name', value: 'friendDistance' },
@@ -945,6 +968,28 @@ export const FriendRequestItemFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<FriendRequestItemFragment, unknown>
+export const ProfileItemFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'ProfileItem' },
+      typeCondition: {
+        kind: 'NamedType',
+        name: { kind: 'Name', value: 'Profile' },
+      },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'avatarPath' } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<ProfileItemFragment, unknown>
 export const DeleteFriendDocument = {
   kind: 'Document',
   definitions: [
@@ -1051,6 +1096,7 @@ export const DeleteFriendDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'avatarPath' } },
                 {
                   kind: 'Field',
                   name: { kind: 'Name', value: 'friendDistance' },
@@ -1749,6 +1795,7 @@ export const FriendsDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'avatarPath' } },
                 {
                   kind: 'Field',
                   name: { kind: 'Name', value: 'friendDistance' },
@@ -1833,3 +1880,51 @@ export const PreviewProfileDocument = {
     },
   ],
 } as unknown as DocumentNode<PreviewProfileQuery, PreviewProfileQueryVariables>
+export const ViewerDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'Viewer' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'viewer' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
+                {
+                  kind: 'FragmentSpread',
+                  name: { kind: 'Name', value: 'ProfileItem' },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'ProfileItem' },
+      typeCondition: {
+        kind: 'NamedType',
+        name: { kind: 'Name', value: 'Profile' },
+      },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'avatarPath' } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<ViewerQuery, ViewerQueryVariables>

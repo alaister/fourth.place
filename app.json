@@ -34,6 +34,7 @@
       "expo-router",
       "expo-apple-authentication",
       "@react-native-google-signin/google-signin",
+      "expo-image-picker",
       "expo-location",
       "expo-notifications"
     ],

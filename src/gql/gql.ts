@@ -13,10 +13,12 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-  '\n  fragment FriendItem on Friend {\n    id\n    nodeId\n    profile: profileB {\n      nodeId\n      id\n      name\n      friendDistance {\n        nodeId\n        distance\n        updatedAt\n      }\n    }\n  }\n':
+  '\n  fragment FriendItem on Friend {\n    id\n    nodeId\n    profile: profileB {\n      nodeId\n      id\n      name\n      avatarPath\n      friendDistance {\n        nodeId\n        distance\n        updatedAt\n      }\n    }\n  }\n':
     types.FriendItemFragmentDoc,
   '\n  fragment FriendRequestItem on FriendRequest {\n    nodeId\n    id\n    state\n    actionedAt\n    toUser {\n      nodeId\n      name\n    }\n    fromUser {\n      nodeId\n      name\n    }\n  }\n':
     types.FriendRequestItemFragmentDoc,
+  '\n  fragment ProfileItem on Profile {\n    nodeId\n    name\n    avatarPath\n  }\n':
+    types.ProfileItemFragmentDoc,
   '\n  mutation DeleteFriend($nodeId: ID!) {\n    deleteFromFriendCollection(filter: { nodeId: { eq: $nodeId } }) {\n      records {\n        ...FriendItem\n      }\n    }\n  }\n':
     types.DeleteFriendDocument,
   '\n  mutation InsertFriendRequest($toUserId: UUID!) {\n    insertIntoFriendRequestCollection(objects: [{ toUserId: $toUserId }]) {\n      records {\n        ...FriendRequestItem\n      }\n    }\n  }\n':
@@ -29,6 +31,8 @@ const documents = {
     types.FriendsDocument,
   '\n  query PreviewProfile($id: UUID!) {\n    profile: previewProfile(id: $id) {\n      nodeId\n      id\n      name\n      avatarPath\n    }\n  }\n':
     types.PreviewProfileDocument,
+  '\n  query Viewer {\n    viewer {\n      nodeId\n      ...ProfileItem\n    }\n  }\n':
+    types.ViewerDocument,
 }
 
 /**
@@ -49,14 +53,20 @@ export function graphql(source: string): unknown
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  fragment FriendItem on Friend {\n    id\n    nodeId\n    profile: profileB {\n      nodeId\n      id\n      name\n      friendDistance {\n        nodeId\n        distance\n        updatedAt\n      }\n    }\n  }\n',
-): (typeof documents)['\n  fragment FriendItem on Friend {\n    id\n    nodeId\n    profile: profileB {\n      nodeId\n      id\n      name\n      friendDistance {\n        nodeId\n        distance\n        updatedAt\n      }\n    }\n  }\n']
+  source: '\n  fragment FriendItem on Friend {\n    id\n    nodeId\n    profile: profileB {\n      nodeId\n      id\n      name\n      avatarPath\n      friendDistance {\n        nodeId\n        distance\n        updatedAt\n      }\n    }\n  }\n',
+): (typeof documents)['\n  fragment FriendItem on Friend {\n    id\n    nodeId\n    profile: profileB {\n      nodeId\n      id\n      name\n      avatarPath\n      friendDistance {\n        nodeId\n        distance\n        updatedAt\n      }\n    }\n  }\n']
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
   source: '\n  fragment FriendRequestItem on FriendRequest {\n    nodeId\n    id\n    state\n    actionedAt\n    toUser {\n      nodeId\n      name\n    }\n    fromUser {\n      nodeId\n      name\n    }\n  }\n',
 ): (typeof documents)['\n  fragment FriendRequestItem on FriendRequest {\n    nodeId\n    id\n    state\n    actionedAt\n    toUser {\n      nodeId\n      name\n    }\n    fromUser {\n      nodeId\n      name\n    }\n  }\n']
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  fragment ProfileItem on Profile {\n    nodeId\n    name\n    avatarPath\n  }\n',
+): (typeof documents)['\n  fragment ProfileItem on Profile {\n    nodeId\n    name\n    avatarPath\n  }\n']
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -93,6 +103,12 @@ export function graphql(
 export function graphql(
   source: '\n  query PreviewProfile($id: UUID!) {\n    profile: previewProfile(id: $id) {\n      nodeId\n      id\n      name\n      avatarPath\n    }\n  }\n',
 ): (typeof documents)['\n  query PreviewProfile($id: UUID!) {\n    profile: previewProfile(id: $id) {\n      nodeId\n      id\n      name\n      avatarPath\n    }\n  }\n']
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query Viewer {\n    viewer {\n      nodeId\n      ...ProfileItem\n    }\n  }\n',
+): (typeof documents)['\n  query Viewer {\n    viewer {\n      nodeId\n      ...ProfileItem\n    }\n  }\n']
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {}

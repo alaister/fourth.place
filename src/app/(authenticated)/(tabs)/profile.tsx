@@ -4,7 +4,9 @@ import { useMemo } from 'react'
 import { Button, Dimensions, Text, View } from 'react-native'
 import QRCode from 'react-native-qrcode-svg'
 
+import ProfileImagePicker from '~/components/ProfileImagePicker'
 import { useUser } from '~/lib/auth'
+import { useViewerQuery } from '~/lib/queries/viewer-query'
 import supabase from '~/lib/supabase'
 
 const logo = require('../../../../assets/images/icon.png')
@@ -12,6 +14,7 @@ const logo = require('../../../../assets/images/icon.png')
 const ProfileScreen = () => {
   const client = useApolloClient()
   const user = useUser()
+  const { data: profile } = useViewerQuery()
 
   const friendAddUrl = useMemo(
     () => Linking.createURL(`/add-friend/${user?.id}`),
@@ -29,6 +32,10 @@ const ProfileScreen = () => {
           size={Dimensions.get('window').width / 2}
         />
       </View>
+
+      {profile?.viewer && (
+        <ProfileImagePicker profileNodeId={profile.viewer.nodeId} />
+      )}
 
       <Button
         title="Sign Out!"
