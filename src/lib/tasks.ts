@@ -2,6 +2,8 @@ import * as Location from 'expo-location'
 import * as TaskManager from 'expo-task-manager'
 import { useEffect } from 'react'
 
+import { getApolloClient } from './apollo'
+import { FriendsQuery } from './queries/friends-query'
 import supabase from './supabase'
 
 export const LOCATION_TASK_NAME = 'background-location-task'
@@ -33,7 +35,13 @@ TaskManager.defineTask<{
 
   const coordinates = data?.locations?.[0]?.coords
   if (coordinates) {
-    updateUserLocation(coordinates)
+    updateUserLocation(coordinates).then(() => {
+      const client = getApolloClient()
+
+      return client.refetchQueries({
+        include: [FriendsQuery],
+      })
+    })
   }
 })
 
