@@ -8,12 +8,12 @@ create table
 
 alter table public.profiles enable row level security;
 
-create policy select_own_profile on public.profiles for
+create policy select_own_profile on public.profiles as permissive for
 select
-  using ("id" = auth.uid ());
+  to authenticated using ("id" = auth.uid ());
 
-create policy update_own_profile on public.profiles for
-update using ("id" = auth.uid ());
+create policy update_own_profile on public.profiles as permissive for
+update to authenticated using ("id" = auth.uid ());
 
 revoke all on table public.profiles
 from
@@ -22,18 +22,19 @@ from
 
 grant
 select
-  on table public.profiles to anon,
-  authenticated;
+  on table public.profiles to authenticated;
 
 grant
-update ("name") on table public.profiles to anon,
-authenticated;
+update ("name") on table public.profiles to authenticated;
 
 comment on table public.profiles is e'@graphql({"name": "Profile"})';
 
 create function public.preview_profile (id uuid) returns public.profiles as $$
   select * from public.profiles where id = $1;
 $$ language sql stable security definer;
+
+grant
+execute on function public.preview_profile (uuid) to authenticated;
 
 create function private.handle_new_user () returns trigger as $$
 begin
@@ -52,3 +53,6 @@ create
 or replace function public.viewer () returns public.profiles as $$
   select * from public.profiles where id = auth.uid();
 $$ language sql stable;
+
+grant
+execute on function public.viewer () to authenticated;

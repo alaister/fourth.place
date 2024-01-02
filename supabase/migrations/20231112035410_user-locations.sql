@@ -15,10 +15,19 @@ update on private.user_locations for each row
 execute procedure moddatetime ("updated_at");
 
 create function public.update_user_location ("latitude" float8, "longitude" float8) returns void as $$
-  insert into private.user_locations ("id", "geolocation")
-  values (auth.uid(), ll_to_earth($1, $2))
-  on conflict ("id") do update set "geolocation" = excluded."geolocation";
-$$ language sql volatile security definer;
+  declare
+    v_user_id uuid := auth.uid();
+  begin
+    if v_user_id is not null then
+      insert into private.user_locations ("id", "geolocation")
+      values (v_user_id, ll_to_earth($1, $2))
+      on conflict ("id") do update set "geolocation" = excluded."geolocation";
+    end if;
+  end;
+$$ language plpgsql volatile security definer;
+
+grant
+execute on function public.update_user_location (float8, float8) to authenticated;
 
 -- Friend distances
 create view
@@ -56,8 +65,7 @@ from
 
 grant
 select
-  on public.friend_distances to anon,
-  authenticated;
+  on public.friend_distances to authenticated;
 
 comment on view public.friend_distances is e'@graphql({
   "name": "FriendDistance",

@@ -12,11 +12,11 @@ create index on public.friends ("profile_b_id");
 
 alter table public.friends enable row level security;
 
-create policy select_own_friends on public.friends for
+create policy select_own_friends on public.friends as permissive for
 select
-  using ("profile_a_id" = auth.uid ());
+  to authenticated using ("profile_a_id" = auth.uid ());
 
-create policy delete_own_friends on public.friends for delete using ("profile_a_id" = auth.uid ());
+create policy delete_own_friends on public.friends as permissive for delete to authenticated using ("profile_a_id" = auth.uid ());
 
 revoke all on table public.friends
 from
@@ -26,15 +26,14 @@ from
 grant
 select
 ,
-  delete on table public.friends to anon,
-  authenticated;
+  delete on table public.friends to authenticated;
 
 comment on table public.friends is e'@graphql({
   "name": "Friend",
   "foreign_keys": [
     {
       "local_name": "friendCollection",
-      "local_columns": ["profile_b_id"],
+      "local_columns": ["profile_a_id"],
       "foreign_name": "profile",
       "foreign_schema": "public",
       "foreign_table": "profiles",
@@ -81,14 +80,14 @@ where
 
 alter table public.friend_requests enable row level security;
 
-create policy select_own_friend_requests on public.friend_requests for
+create policy select_own_friend_requests on public.friend_requests as permissive for
 select
-  using (
+  to authenticated using (
     "to_user_id" = auth.uid ()
     or "from_user_id" = auth.uid ()
   );
 
-create policy send_friend_requests on public.friend_requests for insert
+create policy send_friend_requests on public.friend_requests as permissive for insert to authenticated
 with
   check (
     "from_user_id" = auth.uid ()
@@ -96,8 +95,8 @@ with
     and "state" = 'PENDING'
   );
 
-create policy cancel_own_friend_requests on public.friend_requests for
-update using (
+create policy cancel_own_friend_requests on public.friend_requests as permissive for
+update to authenticated using (
   "from_user_id" = auth.uid ()
   and "state" = 'PENDING'
 )
@@ -107,8 +106,8 @@ with
     and "state" = 'CANCELLED'
   );
 
-create policy accept_or_reject_friend_requests on public.friend_requests for
-update using (
+create policy accept_or_reject_friend_requests on public.friend_requests as permissive for
+update to authenticated using (
   "to_user_id" = auth.uid ()
   and "state" = 'PENDING'
 )
@@ -130,8 +129,7 @@ grant
 select
 ,
   insert ("to_user_id"),
-update ("state") on table public.friend_requests to anon,
-authenticated;
+update ("state") on table public.friend_requests to authenticated;
 
 comment on table public.friend_requests is e'@graphql({
   "name": "FriendRequest",
@@ -220,9 +218,9 @@ update on public.friend_requests for each row
 execute procedure moddatetime (actioned_at);
 
 -- Profile Policies
-create policy select_friend_requests_profiles on public.profiles for
+create policy select_friend_requests_profiles on public.profiles as permissive for
 select
-  using (
+  to authenticated using (
     "id" = any (
       select
         "to_user_id"
@@ -241,9 +239,9 @@ select
     )
   );
 
-create policy select_friends_profiles on public.profiles for
+create policy select_friends_profiles on public.profiles as permissive for
 select
-  using (
+  to authenticated using (
     "id" = any (
       select
         "profile_b_id"

@@ -36,24 +36,27 @@ begin
 end;
 $$ language plpgsql security definer;
 
-create policy select_own_events on public.events for
-select
-  using ("creator_id" = auth.uid ());
+grant
+execute on function private.is_event_participant (uuid, uuid) to authenticated;
 
-create policy select_participating_events on public.events for
+create policy select_own_events on public.events as permissive for
 select
-  using (private.is_event_participant (id, auth.uid ()));
+  to authenticated using ("creator_id" = auth.uid ());
 
-create policy insert_own_events on public.events for insert
+create policy select_participating_events on public.events as permissive for
+select
+  to authenticated using (private.is_event_participant (id, auth.uid ()));
+
+create policy insert_own_events on public.events as permissive for insert to authenticated
 with
   check ("creator_id" = auth.uid ());
 
-create policy update_own_events on public.events for
-update using ("creator_id" = auth.uid ())
+create policy update_own_events on public.events as permissive for
+update to authenticated using ("creator_id" = auth.uid ())
 with
   check ("creator_id" = auth.uid ());
 
-create policy delete_own_events on public.events for delete using ("creator_id" = auth.uid ());
+create policy delete_own_events on public.events as permissive for delete to authenticated using ("creator_id" = auth.uid ());
 
 revoke all on table public.events
 from
@@ -81,8 +84,7 @@ update (
   "start_at",
   "end_at"
 ),
-delete on table public.events to anon,
-authenticated;
+delete on table public.events to authenticated;
 
 comment on table public.events is e'@graphql({
   "name": "Event"
@@ -90,8 +92,8 @@ comment on table public.events is e'@graphql({
 
 create function private.handle_new_event () returns trigger as $$
 begin
-  insert into public.event_participants ("event_id", "profile_id", "state", "actioned_at")
-  values (new."id", new."creator_id", 'ACCEPTED', now());
+  insert into public.event_participants ("event_id", "profile_id", "role", "state", "actioned_at")
+  values (new."id", new."creator_id", 'HOST', 'ACCEPTED', now());
 
   return new;
 end;
@@ -108,12 +110,15 @@ execute procedure moddatetime (updated_at);
 -- Event Participants
 create type public.event_participant_state as enum('INVITED', 'ACCEPTED');
 
+create type public.event_participant_role as enum('HOST', 'GUEST');
+
 create table
   public.event_participants (
     "id" uuid not null primary key default gen_random_uuid (),
     "created_at" timestamp with time zone not null default now(),
     "event_id" uuid not null references public.events (id) on update cascade on delete cascade,
     "profile_id" uuid not null references public.profiles (id) on update cascade on delete cascade,
+    "role" public.event_participant_role not null default 'GUEST',
     "state" public.event_participant_state not null default 'INVITED',
     "actioned_at" timestamp with time zone,
     unique ("event_id", "profile_id")
@@ -123,13 +128,13 @@ create index on public.event_participants ("profile_id");
 
 alter table public.event_participants enable row level security;
 
-create policy select_own_event_participants on public.event_participants for
+create policy select_own_event_participants on public.event_participants as permissive for
 select
-  using ("profile_id" = auth.uid ());
+  to authenticated using ("profile_id" = auth.uid ());
 
-create policy select_other_event_participants on public.event_participants for
+create policy select_other_event_participants on public.event_participants as permissive for
 select
-  using (
+  to authenticated using (
     exists (
       select
         1
@@ -140,7 +145,7 @@ select
     )
   );
 
-create policy must_be_friends_to_insert on public.event_participants as restrictive for insert
+create policy must_be_friends_to_insert on public.event_participants as restrictive for insert to authenticated
 with
   check (
     exists (
@@ -154,7 +159,7 @@ with
     )
   );
 
-create policy insert_event_creator_event_participants on public.event_participants for insert
+create policy insert_event_creator_event_participants on public.event_participants as permissive for insert to authenticated
 with
   check (
     exists (
@@ -168,7 +173,7 @@ with
     )
   );
 
-create policy insert_friends_of_creator_event_participants on public.event_participants for insert
+create policy insert_friends_of_creator_event_participants on public.event_participants as permissive for insert to authenticated
 with
   check (
     exists (
@@ -200,12 +205,12 @@ with
     )
   );
 
-create policy update_own_event_participants on public.event_participants for
-update using ("profile_id" = auth.uid ())
+create policy update_own_event_participants on public.event_participants as permissive for
+update to authenticated using ("profile_id" = auth.uid ())
 with
   check ("profile_id" = auth.uid ());
 
-create policy event_creator_can_delete_event_participants on public.event_participants for delete using (
+create policy event_creator_can_delete_event_participants on public.event_participants as permissive for delete to authenticated using (
   exists (
     select
       1
@@ -227,8 +232,7 @@ select
 ,
   insert ("event_id", "profile_id"),
 update ("state"),
-delete on table public.event_participants to anon,
-authenticated;
+delete on table public.event_participants to authenticated;
 
 comment on table public.event_participants is e'@graphql({
   "name": "EventParticipant"
@@ -250,9 +254,9 @@ create index on public.event_participant_seen_statuses ("event_participant_id");
 
 alter table public.event_participant_seen_statuses enable row level security;
 
-create policy select_event_creator_seen_status on public.event_participant_seen_statuses for
+create policy select_event_creator_seen_status on public.event_participant_seen_statuses as permissive for
 select
-  using (
+  to authenticated using (
     exists (
       select
         1
@@ -271,7 +275,7 @@ select
     )
   );
 
-create policy event_creator_cannot_insert_own_seen_status on public.event_participant_seen_statuses as restrictive for insert
+create policy event_creator_cannot_insert_own_seen_status on public.event_participant_seen_statuses as restrictive for insert to authenticated
 with
   check (
     not exists (
@@ -292,7 +296,7 @@ with
     )
   );
 
-create policy insert_own_seen_status on public.event_participant_seen_statuses for insert
+create policy insert_own_seen_status on public.event_participant_seen_statuses as permissive for insert to authenticated
 with
   check (
     exists (
@@ -314,17 +318,16 @@ from
 grant
 select
 ,
-  insert ("event_participant_id") on table public.event_participant_seen_statuses to anon,
-  authenticated;
+  insert ("event_participant_id") on table public.event_participant_seen_statuses to authenticated;
 
 comment on table public.event_participant_seen_statuses is e'@graphql({
   "name": "EventParticipantSeenStatus"
 })';
 
 -- Profile Policies
-create policy select_coparticipating_event_profiles on public.profiles for
+create policy select_coparticipating_event_profiles on public.profiles as permissive for
 select
-  using (
+  to authenticated using (
     exists (
       select
         1
