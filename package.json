@@ -10,7 +10,8 @@
     "test": "jest --watchAll",
     "prettier": "prettier --write .",
     "lint": "eslint .",
-    "codegen": "graphql-codegen --config codegen.ts"
+    "codegen": "graphql-codegen --config codegen.ts",
+    "colors": "npx @klarna/platform-colors"
   },
   "jest": {
     "preset": "jest-expo"

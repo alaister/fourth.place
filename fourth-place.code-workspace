@@ -1,0 +1,34 @@
+{
+  "folders": [
+    {
+      "name": "project-root",
+      "path": "./"
+    },
+    {
+      "name": "app-src",
+      "path": "src"
+    },
+    {
+      "name": "supabase-migrations",
+      "path": "supabase/migrations"
+    },
+    {
+      "name": "supabase-functions",
+      "path": "supabase/functions"
+    },
+    {
+      "name": "worker",
+      "path": "worker"
+    },
+    {
+      "name": "scripts",
+      "path": "scripts"
+    }
+  ],
+  "settings": {
+    "editor.formatOnSave": true,
+    "files.exclude": {
+      "supabase/functions/": true
+    }
+  }
+}

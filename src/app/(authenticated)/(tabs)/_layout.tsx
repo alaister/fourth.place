@@ -18,14 +18,16 @@ export default function TabLayout() {
 
   return (
     <Tabs
+      initialRouteName="(events)"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="(events)"
         options={{
           title: 'Events',
+          headerShown: false,
           tabBarIcon({ color, size, focused }) {
             const Icon = focused ? TicketSolidIcon : TicketOutlineIcon
             return <Icon width={size} height={size} color={color} />
@@ -47,6 +49,7 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: 'Profile',
+          headerShown: false,
           tabBarIcon({ color, size, focused }) {
             const Icon = focused ? UserCircleSolidIcon : UserCircleOutlineIcon
             return <Icon width={size} height={size} color={color} />

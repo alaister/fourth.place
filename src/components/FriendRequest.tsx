@@ -1,6 +1,7 @@
 import { useFragment } from '@apollo/client'
-import { Button, StyleSheet, Text, View } from 'react-native'
+import { Button, StyleSheet, View } from 'react-native'
 
+import { Text } from '~/components/ui'
 import { graphql } from '~/gql'
 import { FriendRequestState } from '~/gql/graphql'
 import { useUpdateFriendRequestMutation } from '~/lib/mutations/update-friend-request-mutation'

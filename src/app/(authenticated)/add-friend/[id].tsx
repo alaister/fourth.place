@@ -1,7 +1,8 @@
 import { router, useLocalSearchParams } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
-import { Button, Platform, StyleSheet, Text, View } from 'react-native'
+import { Button, Platform, StyleSheet, View } from 'react-native'
 
+import { Text } from '~/components/ui'
 import { useInsertFriendRequestMutation } from '~/lib/mutations/insert-friend-request-mutation'
 import { usePreviewProfileQuery } from '~/lib/queries/preview-profile-query'
 import { first } from '~/lib/utils'

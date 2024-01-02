@@ -1,15 +1,16 @@
 import { useApolloClient } from '@apollo/client'
 import * as Linking from 'expo-linking'
 import { useMemo } from 'react'
-import { Button, Dimensions, Text, View } from 'react-native'
+import { Button, Dimensions, View } from 'react-native'
 import QRCode from 'react-native-qrcode-svg'
 
 import ProfileImagePicker from '~/components/ProfileImagePicker'
+import { Text } from '~/components/ui'
 import { useUser } from '~/lib/auth'
 import { useViewerQuery } from '~/lib/queries/viewer-query'
 import supabase from '~/lib/supabase'
 
-const logo = require('../../../../assets/images/icon.png')
+const logo = require('../../../../../assets/images/icon.png')
 
 const ProfileScreen = () => {
   const client = useApolloClient()

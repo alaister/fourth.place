@@ -101,6 +101,314 @@ export type DatetimeFilter = {
   neq?: InputMaybe<Scalars['Datetime']['input']>
 }
 
+export type Event = Node & {
+  __typename?: 'Event'
+  address?: Maybe<Scalars['String']['output']>
+  createdAt: Scalars['Datetime']['output']
+  creator: Profile
+  creatorId: Scalars['UUID']['output']
+  description?: Maybe<Scalars['String']['output']>
+  endAt?: Maybe<Scalars['Datetime']['output']>
+  eventParticipantCollection?: Maybe<EventParticipantConnection>
+  geolocation?: Maybe<Scalars['Opaque']['output']>
+  id: Scalars['UUID']['output']
+  inviteRule: EventInviteRule
+  name: Scalars['String']['output']
+  /** Globally Unique Record Identifier */
+  nodeId: Scalars['ID']['output']
+  startAt?: Maybe<Scalars['Datetime']['output']>
+  updatedAt: Scalars['Datetime']['output']
+}
+
+export type EventEventParticipantCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>
+  before?: InputMaybe<Scalars['Cursor']['input']>
+  filter?: InputMaybe<EventParticipantFilter>
+  first?: InputMaybe<Scalars['Int']['input']>
+  last?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<EventParticipantOrderBy>>
+}
+
+export type EventConnection = {
+  __typename?: 'EventConnection'
+  edges: Array<EventEdge>
+  pageInfo: PageInfo
+}
+
+export type EventDeleteResponse = {
+  __typename?: 'EventDeleteResponse'
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']['output']
+  /** Array of records impacted by the mutation */
+  records: Array<Event>
+}
+
+export type EventEdge = {
+  __typename?: 'EventEdge'
+  cursor: Scalars['String']['output']
+  node: Event
+}
+
+export type EventFilter = {
+  address?: InputMaybe<StringFilter>
+  /** Returns true only if all its inner filters are true, otherwise returns false */
+  and?: InputMaybe<Array<EventFilter>>
+  createdAt?: InputMaybe<DatetimeFilter>
+  creatorId?: InputMaybe<UuidFilter>
+  description?: InputMaybe<StringFilter>
+  endAt?: InputMaybe<DatetimeFilter>
+  geolocation?: InputMaybe<OpaqueFilter>
+  id?: InputMaybe<UuidFilter>
+  inviteRule?: InputMaybe<EventInviteRuleFilter>
+  name?: InputMaybe<StringFilter>
+  nodeId?: InputMaybe<IdFilter>
+  /** Negates a filter */
+  not?: InputMaybe<EventFilter>
+  /** Returns true if at least one of its inner filters is true, otherwise returns false */
+  or?: InputMaybe<Array<EventFilter>>
+  startAt?: InputMaybe<DatetimeFilter>
+  updatedAt?: InputMaybe<DatetimeFilter>
+}
+
+export type EventInsertInput = {
+  address?: InputMaybe<Scalars['String']['input']>
+  description?: InputMaybe<Scalars['String']['input']>
+  endAt?: InputMaybe<Scalars['Datetime']['input']>
+  geolocation?: InputMaybe<Scalars['Opaque']['input']>
+  inviteRule?: InputMaybe<EventInviteRule>
+  name?: InputMaybe<Scalars['String']['input']>
+  startAt?: InputMaybe<Scalars['Datetime']['input']>
+}
+
+export type EventInsertResponse = {
+  __typename?: 'EventInsertResponse'
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']['output']
+  /** Array of records impacted by the mutation */
+  records: Array<Event>
+}
+
+export enum EventInviteRule {
+  Creator = 'CREATOR',
+  FriendsOfCreator = 'FRIENDS_OF_CREATOR',
+}
+
+/** Boolean expression comparing fields on type "EventInviteRule" */
+export type EventInviteRuleFilter = {
+  eq?: InputMaybe<EventInviteRule>
+  in?: InputMaybe<Array<EventInviteRule>>
+  is?: InputMaybe<FilterIs>
+  neq?: InputMaybe<EventInviteRule>
+}
+
+export type EventOrderBy = {
+  address?: InputMaybe<OrderByDirection>
+  createdAt?: InputMaybe<OrderByDirection>
+  creatorId?: InputMaybe<OrderByDirection>
+  description?: InputMaybe<OrderByDirection>
+  endAt?: InputMaybe<OrderByDirection>
+  geolocation?: InputMaybe<OrderByDirection>
+  id?: InputMaybe<OrderByDirection>
+  inviteRule?: InputMaybe<OrderByDirection>
+  name?: InputMaybe<OrderByDirection>
+  startAt?: InputMaybe<OrderByDirection>
+  updatedAt?: InputMaybe<OrderByDirection>
+}
+
+export type EventParticipant = Node & {
+  __typename?: 'EventParticipant'
+  actionedAt?: Maybe<Scalars['Datetime']['output']>
+  createdAt: Scalars['Datetime']['output']
+  event: Event
+  eventId: Scalars['UUID']['output']
+  eventParticipantSeenStatusCollection?: Maybe<EventParticipantSeenStatusConnection>
+  id: Scalars['UUID']['output']
+  /** Globally Unique Record Identifier */
+  nodeId: Scalars['ID']['output']
+  profile: Profile
+  profileId: Scalars['UUID']['output']
+  role: EventParticipantRole
+  state: EventParticipantState
+}
+
+export type EventParticipantEventParticipantSeenStatusCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>
+  before?: InputMaybe<Scalars['Cursor']['input']>
+  filter?: InputMaybe<EventParticipantSeenStatusFilter>
+  first?: InputMaybe<Scalars['Int']['input']>
+  last?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<EventParticipantSeenStatusOrderBy>>
+}
+
+export type EventParticipantConnection = {
+  __typename?: 'EventParticipantConnection'
+  edges: Array<EventParticipantEdge>
+  pageInfo: PageInfo
+}
+
+export type EventParticipantDeleteResponse = {
+  __typename?: 'EventParticipantDeleteResponse'
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']['output']
+  /** Array of records impacted by the mutation */
+  records: Array<EventParticipant>
+}
+
+export type EventParticipantEdge = {
+  __typename?: 'EventParticipantEdge'
+  cursor: Scalars['String']['output']
+  node: EventParticipant
+}
+
+export type EventParticipantFilter = {
+  actionedAt?: InputMaybe<DatetimeFilter>
+  /** Returns true only if all its inner filters are true, otherwise returns false */
+  and?: InputMaybe<Array<EventParticipantFilter>>
+  createdAt?: InputMaybe<DatetimeFilter>
+  eventId?: InputMaybe<UuidFilter>
+  id?: InputMaybe<UuidFilter>
+  nodeId?: InputMaybe<IdFilter>
+  /** Negates a filter */
+  not?: InputMaybe<EventParticipantFilter>
+  /** Returns true if at least one of its inner filters is true, otherwise returns false */
+  or?: InputMaybe<Array<EventParticipantFilter>>
+  profileId?: InputMaybe<UuidFilter>
+  role?: InputMaybe<EventParticipantRoleFilter>
+  state?: InputMaybe<EventParticipantStateFilter>
+}
+
+export type EventParticipantInsertInput = {
+  eventId?: InputMaybe<Scalars['UUID']['input']>
+  profileId?: InputMaybe<Scalars['UUID']['input']>
+}
+
+export type EventParticipantInsertResponse = {
+  __typename?: 'EventParticipantInsertResponse'
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']['output']
+  /** Array of records impacted by the mutation */
+  records: Array<EventParticipant>
+}
+
+export type EventParticipantOrderBy = {
+  actionedAt?: InputMaybe<OrderByDirection>
+  createdAt?: InputMaybe<OrderByDirection>
+  eventId?: InputMaybe<OrderByDirection>
+  id?: InputMaybe<OrderByDirection>
+  profileId?: InputMaybe<OrderByDirection>
+  role?: InputMaybe<OrderByDirection>
+  state?: InputMaybe<OrderByDirection>
+}
+
+export enum EventParticipantRole {
+  Guest = 'GUEST',
+  Host = 'HOST',
+}
+
+/** Boolean expression comparing fields on type "EventParticipantRole" */
+export type EventParticipantRoleFilter = {
+  eq?: InputMaybe<EventParticipantRole>
+  in?: InputMaybe<Array<EventParticipantRole>>
+  is?: InputMaybe<FilterIs>
+  neq?: InputMaybe<EventParticipantRole>
+}
+
+export type EventParticipantSeenStatus = Node & {
+  __typename?: 'EventParticipantSeenStatus'
+  eventParticipant: EventParticipant
+  eventParticipantId: Scalars['UUID']['output']
+  id: Scalars['UUID']['output']
+  /** Globally Unique Record Identifier */
+  nodeId: Scalars['ID']['output']
+  seenAt: Scalars['Datetime']['output']
+}
+
+export type EventParticipantSeenStatusConnection = {
+  __typename?: 'EventParticipantSeenStatusConnection'
+  edges: Array<EventParticipantSeenStatusEdge>
+  pageInfo: PageInfo
+}
+
+export type EventParticipantSeenStatusEdge = {
+  __typename?: 'EventParticipantSeenStatusEdge'
+  cursor: Scalars['String']['output']
+  node: EventParticipantSeenStatus
+}
+
+export type EventParticipantSeenStatusFilter = {
+  /** Returns true only if all its inner filters are true, otherwise returns false */
+  and?: InputMaybe<Array<EventParticipantSeenStatusFilter>>
+  eventParticipantId?: InputMaybe<UuidFilter>
+  id?: InputMaybe<UuidFilter>
+  nodeId?: InputMaybe<IdFilter>
+  /** Negates a filter */
+  not?: InputMaybe<EventParticipantSeenStatusFilter>
+  /** Returns true if at least one of its inner filters is true, otherwise returns false */
+  or?: InputMaybe<Array<EventParticipantSeenStatusFilter>>
+  seenAt?: InputMaybe<DatetimeFilter>
+}
+
+export type EventParticipantSeenStatusInsertInput = {
+  eventParticipantId?: InputMaybe<Scalars['UUID']['input']>
+}
+
+export type EventParticipantSeenStatusInsertResponse = {
+  __typename?: 'EventParticipantSeenStatusInsertResponse'
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']['output']
+  /** Array of records impacted by the mutation */
+  records: Array<EventParticipantSeenStatus>
+}
+
+export type EventParticipantSeenStatusOrderBy = {
+  eventParticipantId?: InputMaybe<OrderByDirection>
+  id?: InputMaybe<OrderByDirection>
+  seenAt?: InputMaybe<OrderByDirection>
+}
+
+export enum EventParticipantState {
+  Accepted = 'ACCEPTED',
+  Invited = 'INVITED',
+}
+
+/** Boolean expression comparing fields on type "EventParticipantState" */
+export type EventParticipantStateFilter = {
+  eq?: InputMaybe<EventParticipantState>
+  in?: InputMaybe<Array<EventParticipantState>>
+  is?: InputMaybe<FilterIs>
+  neq?: InputMaybe<EventParticipantState>
+}
+
+export type EventParticipantUpdateInput = {
+  state?: InputMaybe<EventParticipantState>
+}
+
+export type EventParticipantUpdateResponse = {
+  __typename?: 'EventParticipantUpdateResponse'
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']['output']
+  /** Array of records impacted by the mutation */
+  records: Array<EventParticipant>
+}
+
+export type EventUpdateInput = {
+  address?: InputMaybe<Scalars['String']['input']>
+  description?: InputMaybe<Scalars['String']['input']>
+  endAt?: InputMaybe<Scalars['Datetime']['input']>
+  geolocation?: InputMaybe<Scalars['Opaque']['input']>
+  inviteRule?: InputMaybe<EventInviteRule>
+  name?: InputMaybe<Scalars['String']['input']>
+  startAt?: InputMaybe<Scalars['Datetime']['input']>
+}
+
+export type EventUpdateResponse = {
+  __typename?: 'EventUpdateResponse'
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']['output']
+  /** Array of records impacted by the mutation */
+  records: Array<Event>
+}
+
 export enum FilterIs {
   NotNull = 'NOT_NULL',
   Null = 'NULL',
@@ -124,6 +432,7 @@ export type Friend = Node & {
   id: Scalars['UUID']['output']
   /** Globally Unique Record Identifier */
   nodeId: Scalars['ID']['output']
+  profile: Profile
   profileA: Profile
   profileAId: Scalars['UUID']['output']
   profileB: Profile
@@ -322,15 +631,41 @@ export type IntFilter = {
 /** The root type for creating and mutating data */
 export type Mutation = {
   __typename?: 'Mutation'
+  /** Deletes zero or more records from the `Event` collection */
+  deleteFromEventCollection: EventDeleteResponse
+  /** Deletes zero or more records from the `EventParticipant` collection */
+  deleteFromEventParticipantCollection: EventParticipantDeleteResponse
   /** Deletes zero or more records from the `Friend` collection */
   deleteFromFriendCollection: FriendDeleteResponse
+  /** Adds one or more `Event` records to the collection */
+  insertIntoEventCollection?: Maybe<EventInsertResponse>
+  /** Adds one or more `EventParticipant` records to the collection */
+  insertIntoEventParticipantCollection?: Maybe<EventParticipantInsertResponse>
+  /** Adds one or more `EventParticipantSeenStatus` records to the collection */
+  insertIntoEventParticipantSeenStatusCollection?: Maybe<EventParticipantSeenStatusInsertResponse>
   /** Adds one or more `FriendRequest` records to the collection */
   insertIntoFriendRequestCollection?: Maybe<FriendRequestInsertResponse>
+  /** Updates zero or more records in the `Event` collection */
+  updateEventCollection: EventUpdateResponse
+  /** Updates zero or more records in the `EventParticipant` collection */
+  updateEventParticipantCollection: EventParticipantUpdateResponse
   /** Updates zero or more records in the `FriendRequest` collection */
   updateFriendRequestCollection: FriendRequestUpdateResponse
   /** Updates zero or more records in the `Profile` collection */
   updateProfileCollection: ProfileUpdateResponse
   updateUserLocation?: Maybe<Scalars['Opaque']['output']>
+}
+
+/** The root type for creating and mutating data */
+export type MutationDeleteFromEventCollectionArgs = {
+  atMost?: Scalars['Int']['input']
+  filter?: InputMaybe<EventFilter>
+}
+
+/** The root type for creating and mutating data */
+export type MutationDeleteFromEventParticipantCollectionArgs = {
+  atMost?: Scalars['Int']['input']
+  filter?: InputMaybe<EventParticipantFilter>
 }
 
 /** The root type for creating and mutating data */
@@ -340,8 +675,37 @@ export type MutationDeleteFromFriendCollectionArgs = {
 }
 
 /** The root type for creating and mutating data */
+export type MutationInsertIntoEventCollectionArgs = {
+  objects: Array<EventInsertInput>
+}
+
+/** The root type for creating and mutating data */
+export type MutationInsertIntoEventParticipantCollectionArgs = {
+  objects: Array<EventParticipantInsertInput>
+}
+
+/** The root type for creating and mutating data */
+export type MutationInsertIntoEventParticipantSeenStatusCollectionArgs = {
+  objects: Array<EventParticipantSeenStatusInsertInput>
+}
+
+/** The root type for creating and mutating data */
 export type MutationInsertIntoFriendRequestCollectionArgs = {
   objects: Array<FriendRequestInsertInput>
+}
+
+/** The root type for creating and mutating data */
+export type MutationUpdateEventCollectionArgs = {
+  atMost?: Scalars['Int']['input']
+  filter?: InputMaybe<EventFilter>
+  set: EventUpdateInput
+}
+
+/** The root type for creating and mutating data */
+export type MutationUpdateEventParticipantCollectionArgs = {
+  atMost?: Scalars['Int']['input']
+  filter?: InputMaybe<EventParticipantFilter>
+  set: EventParticipantUpdateInput
 }
 
 /** The root type for creating and mutating data */
@@ -399,6 +763,8 @@ export type Profile = Node & {
   __typename?: 'Profile'
   avatarPath?: Maybe<Scalars['String']['output']>
   createdAt: Scalars['Datetime']['output']
+  eventCollection?: Maybe<EventConnection>
+  eventParticipantCollection?: Maybe<EventParticipantConnection>
   friendCollection?: Maybe<FriendConnection>
   friendDistance: FriendDistance
   friendRequestCollection?: Maybe<FriendRequestConnection>
@@ -408,6 +774,24 @@ export type Profile = Node & {
   nodeId: Scalars['ID']['output']
   receivedFriendRequestCollection?: Maybe<FriendRequestConnection>
   sentFriendRequestCollection?: Maybe<FriendRequestConnection>
+}
+
+export type ProfileEventCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>
+  before?: InputMaybe<Scalars['Cursor']['input']>
+  filter?: InputMaybe<EventFilter>
+  first?: InputMaybe<Scalars['Int']['input']>
+  last?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<EventOrderBy>>
+}
+
+export type ProfileEventParticipantCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>
+  before?: InputMaybe<Scalars['Cursor']['input']>
+  filter?: InputMaybe<EventParticipantFilter>
+  first?: InputMaybe<Scalars['Int']['input']>
+  last?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<EventParticipantOrderBy>>
 }
 
 export type ProfileFriendCollectionArgs = {
@@ -494,6 +878,12 @@ export type ProfileUpdateResponse = {
 /** The root type for querying data */
 export type Query = {
   __typename?: 'Query'
+  /** A pagable collection of type `Event` */
+  eventCollection?: Maybe<EventConnection>
+  /** A pagable collection of type `EventParticipant` */
+  eventParticipantCollection?: Maybe<EventParticipantConnection>
+  /** A pagable collection of type `EventParticipantSeenStatus` */
+  eventParticipantSeenStatusCollection?: Maybe<EventParticipantSeenStatusConnection>
   /** A pagable collection of type `Friend` */
   friendCollection?: Maybe<FriendConnection>
   /** A pagable collection of type `FriendDistance` */
@@ -505,9 +895,37 @@ export type Query = {
   previewProfile?: Maybe<Profile>
   /** A pagable collection of type `Profile` */
   profileCollection?: Maybe<ProfileConnection>
-  /** A pagable collection of type `spatial_ref_sys` */
-  spatial_ref_sysCollection?: Maybe<Spatial_Ref_SysConnection>
   viewer?: Maybe<Profile>
+}
+
+/** The root type for querying data */
+export type QueryEventCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>
+  before?: InputMaybe<Scalars['Cursor']['input']>
+  filter?: InputMaybe<EventFilter>
+  first?: InputMaybe<Scalars['Int']['input']>
+  last?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<EventOrderBy>>
+}
+
+/** The root type for querying data */
+export type QueryEventParticipantCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>
+  before?: InputMaybe<Scalars['Cursor']['input']>
+  filter?: InputMaybe<EventParticipantFilter>
+  first?: InputMaybe<Scalars['Int']['input']>
+  last?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<EventParticipantOrderBy>>
+}
+
+/** The root type for querying data */
+export type QueryEventParticipantSeenStatusCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>
+  before?: InputMaybe<Scalars['Cursor']['input']>
+  filter?: InputMaybe<EventParticipantSeenStatusFilter>
+  first?: InputMaybe<Scalars['Int']['input']>
+  last?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<EventParticipantSeenStatusOrderBy>>
 }
 
 /** The root type for querying data */
@@ -560,16 +978,6 @@ export type QueryProfileCollectionArgs = {
   orderBy?: InputMaybe<Array<ProfileOrderBy>>
 }
 
-/** The root type for querying data */
-export type QuerySpatial_Ref_SysCollectionArgs = {
-  after?: InputMaybe<Scalars['Cursor']['input']>
-  before?: InputMaybe<Scalars['Cursor']['input']>
-  filter?: InputMaybe<Spatial_Ref_SysFilter>
-  first?: InputMaybe<Scalars['Int']['input']>
-  last?: InputMaybe<Scalars['Int']['input']>
-  orderBy?: InputMaybe<Array<Spatial_Ref_SysOrderBy>>
-}
-
 /** Boolean expression comparing fields on type "String" */
 export type StringFilter = {
   eq?: InputMaybe<Scalars['String']['input']>
@@ -607,50 +1015,29 @@ export type UuidFilter = {
   neq?: InputMaybe<Scalars['UUID']['input']>
 }
 
-export type Spatial_Ref_Sys = Node & {
-  __typename?: 'spatial_ref_sys'
-  auth_name?: Maybe<Scalars['String']['output']>
-  auth_srid?: Maybe<Scalars['Int']['output']>
-  /** Globally Unique Record Identifier */
-  nodeId: Scalars['ID']['output']
-  proj4text?: Maybe<Scalars['String']['output']>
-  srid: Scalars['Int']['output']
-  srtext?: Maybe<Scalars['String']['output']>
-}
-
-export type Spatial_Ref_SysConnection = {
-  __typename?: 'spatial_ref_sysConnection'
-  edges: Array<Spatial_Ref_SysEdge>
-  pageInfo: PageInfo
-}
-
-export type Spatial_Ref_SysEdge = {
-  __typename?: 'spatial_ref_sysEdge'
-  cursor: Scalars['String']['output']
-  node: Spatial_Ref_Sys
-}
-
-export type Spatial_Ref_SysFilter = {
-  /** Returns true only if all its inner filters are true, otherwise returns false */
-  and?: InputMaybe<Array<Spatial_Ref_SysFilter>>
-  auth_name?: InputMaybe<StringFilter>
-  auth_srid?: InputMaybe<IntFilter>
-  nodeId?: InputMaybe<IdFilter>
-  /** Negates a filter */
-  not?: InputMaybe<Spatial_Ref_SysFilter>
-  /** Returns true if at least one of its inner filters is true, otherwise returns false */
-  or?: InputMaybe<Array<Spatial_Ref_SysFilter>>
-  proj4text?: InputMaybe<StringFilter>
-  srid?: InputMaybe<IntFilter>
-  srtext?: InputMaybe<StringFilter>
-}
-
-export type Spatial_Ref_SysOrderBy = {
-  auth_name?: InputMaybe<OrderByDirection>
-  auth_srid?: InputMaybe<OrderByDirection>
-  proj4text?: InputMaybe<OrderByDirection>
-  srid?: InputMaybe<OrderByDirection>
-  srtext?: InputMaybe<OrderByDirection>
+export type EventItemFragment = {
+  __typename: 'Event'
+  id: string
+  nodeId: string
+  name: string
+  startAt?: string | null
+  endAt?: string | null
+  hostCollection?: {
+    __typename: 'EventParticipantConnection'
+    edges: Array<{
+      __typename: 'EventParticipantEdge'
+      node: {
+        __typename: 'EventParticipant'
+        nodeId: string
+        profile: {
+          __typename: 'Profile'
+          nodeId: string
+          name: string
+          avatarPath?: string | null
+        }
+      }
+    }>
+  } | null
 }
 
 export type FriendItemFragment = {
@@ -759,6 +1146,48 @@ export type UpdateFriendRequestMutation = {
   }
 }
 
+export type EventsQueryVariables = Exact<{ [key: string]: never }>
+
+export type EventsQuery = {
+  __typename: 'Query'
+  eventCollection?: {
+    __typename: 'EventConnection'
+    pageInfo: {
+      __typename: 'PageInfo'
+      hasNextPage: boolean
+      endCursor?: string | null
+    }
+    edges: Array<{
+      __typename: 'EventEdge'
+      cursor: string
+      node: {
+        __typename: 'Event'
+        nodeId: string
+        id: string
+        name: string
+        startAt?: string | null
+        endAt?: string | null
+        hostCollection?: {
+          __typename: 'EventParticipantConnection'
+          edges: Array<{
+            __typename: 'EventParticipantEdge'
+            node: {
+              __typename: 'EventParticipant'
+              nodeId: string
+              profile: {
+                __typename: 'Profile'
+                nodeId: string
+                name: string
+                avatarPath?: string | null
+              }
+            }
+          }>
+        } | null
+      }
+    }>
+  } | null
+}
+
 export type FriendRequestsQueryVariables = Exact<{ [key: string]: never }>
 
 export type FriendRequestsQuery = {
@@ -860,6 +1289,121 @@ export type ViewerQuery = {
   } | null
 }
 
+export const EventItemFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'EventItem' },
+      typeCondition: {
+        kind: 'NamedType',
+        name: { kind: 'Name', value: 'Event' },
+      },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'startAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'endAt' } },
+          {
+            kind: 'Field',
+            alias: { kind: 'Name', value: 'hostCollection' },
+            name: { kind: 'Name', value: 'eventParticipantCollection' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'filter' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'role' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'eq' },
+                            value: { kind: 'EnumValue', value: 'HOST' },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'edges' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: '__typename' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'node' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: '__typename' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'nodeId' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'profile' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: '__typename' },
+                                  },
+                                  {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'nodeId' },
+                                  },
+                                  {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'name' },
+                                  },
+                                  {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'avatarPath' },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<EventItemFragment, unknown>
 export const FriendItemFragmentDoc = {
   kind: 'Document',
   definitions: [
@@ -1418,6 +1962,207 @@ export const UpdateFriendRequestDocument = {
   UpdateFriendRequestMutation,
   UpdateFriendRequestMutationVariables
 >
+export const EventsDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'Events' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'eventCollection' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'pageInfo' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: '__typename' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'hasNextPage' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'endCursor' },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'edges' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: '__typename' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'cursor' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'node' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: '__typename' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'nodeId' },
+                            },
+                            {
+                              kind: 'FragmentSpread',
+                              name: { kind: 'Name', value: 'EventItem' },
+                              directives: [
+                                {
+                                  kind: 'Directive',
+                                  name: { kind: 'Name', value: 'nonreactive' },
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'EventItem' },
+      typeCondition: {
+        kind: 'NamedType',
+        name: { kind: 'Name', value: 'Event' },
+      },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'nodeId' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'startAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'endAt' } },
+          {
+            kind: 'Field',
+            alias: { kind: 'Name', value: 'hostCollection' },
+            name: { kind: 'Name', value: 'eventParticipantCollection' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'filter' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'role' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'eq' },
+                            value: { kind: 'EnumValue', value: 'HOST' },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'edges' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: '__typename' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'node' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: '__typename' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'nodeId' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'profile' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: '__typename' },
+                                  },
+                                  {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'nodeId' },
+                                  },
+                                  {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'name' },
+                                  },
+                                  {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'avatarPath' },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<EventsQuery, EventsQueryVariables>
 export const FriendRequestsDocument = {
   kind: 'Document',
   definitions: [

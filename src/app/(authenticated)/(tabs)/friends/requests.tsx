@@ -1,6 +1,7 @@
-import { FlatList, RefreshControl, StyleSheet, Text, View } from 'react-native'
+import { FlatList, RefreshControl, StyleSheet, View } from 'react-native'
 
 import FriendRequest from '~/components/FriendRequest'
+import { Text } from '~/components/ui'
 import { useFriendRequestsQuery } from '~/lib/queries/friend-requests-query'
 import { useRefresh } from '~/lib/utils'
 

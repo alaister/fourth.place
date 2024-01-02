@@ -4,6 +4,10 @@ module.exports = {
       light: '#ffffff',
       dark: '#000000',
     },
+    text: {
+      light: '#212529',
+      dark: '#ffffff',
+    },
     accent: 'pink',
   },
   javascript: {

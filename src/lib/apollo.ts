@@ -5,6 +5,7 @@ import {
   createHttpLink,
   defaultDataIdFromObject,
 } from '@apollo/client'
+import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev'
 import { setContext } from '@apollo/client/link/context'
 import { relayStylePagination } from '@apollo/client/utilities'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -13,6 +14,12 @@ import { Platform } from 'react-native'
 
 import possibleTypes from '~/gql/possible-types.json'
 import supabase from '~/lib/supabase'
+
+// Adds messages only in a dev environment
+if (__DEV__) {
+  loadDevMessages()
+  loadErrorMessages()
+}
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined
 
