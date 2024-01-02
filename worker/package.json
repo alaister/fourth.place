@@ -1,0 +1,21 @@
+{
+  "name": "fourth-place-worker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --loader ts-node/esm node_modules/.bin/graphile-worker",
+    "build": "tsc",
+    "start": "graphile-worker"
+  },
+  "keywords": [],
+  "license": "UNLICENSED",
+  "dependencies": {
+    "graphile-worker": "^0.16.0",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}
